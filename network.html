@@ -1,0 +1,131 @@
+<html>
+<head>
+  <title>NETWORK</title>
+  <meta charset="utf-8" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+</head>
+<style>
+body, html {
+    margin: 0;
+  }
+canvas {
+    padding: 0;
+    margin: auto;
+    display: block;
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+svg {
+    padding: 0;
+    margin: auto;
+    display: block;
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+path.country {
+    fill: gray;
+    stroke-width: 1;
+    stroke: rgb(0, 0, 0);
+    opacity: .5;
+}
+path.sample {
+    stroke: black;
+    stroke-width: 1px;
+    fill: rgb(59, 231, 217);
+    fill-opacity: .5;
+}
+line.link {
+      stroke-width: 1px;
+      stroke: black;
+      stroke-opacity: .5;
+}
+circle.node {
+  fill: rgb(78, 228, 255);
+  stroke: white;
+  stroke-width: 1px;
+}
+circle.xy {
+  fill: rgb(63, 76, 133);
+  stroke: black;
+  stroke-width: 1px;
+}
+</style>
+<body>
+<canvas height = '500' width = '500'></canvas>
+<div id="viz">
+  <svg></svg>
+</div>
+</body>
+  <footer>
+    
+<script>
+  var linkScale = d3.scale.linear().domain([0,.9,.95,1]).range([0,10,100,1000]);
+
+  sampleNodes = d3.range(3000).map(function(d) {
+    var datapoint = {};
+    datapoint.id = "Sample Node " + d;
+
+    return datapoint;
+  })
+  sampleLinks = [];
+    var y = 0;
+    while (y < 1000) {
+      var randomSource = Math.floor(Math.random() * 1000);
+      var randomTarget = Math.floor(linkScale(Math.random()));
+      var linkObject = {source: sampleNodes[randomSource], target: sampleNodes[randomTarget]}
+      if (randomSource != randomTarget) {
+       sampleLinks.push(linkObject);
+      }
+      y++;
+  }
+  
+      force = d3.layout.force()
+      .size([500,500])
+      .gravity(.5)
+      .nodes(sampleNodes)
+      .links(sampleLinks)
+      .on("tick", forceTick);
+
+      d3.select("svg").selectAll("circle.node")
+      .data(sampleNodes)
+      .enter()
+      .append("circle")
+      .attr("r", 3)
+      .attr("class", "node");
+      
+      force.start();
+      
+      function forceTick() {
+      	var context = d3.select("canvas").node().getContext("2d");
+        context.clearRect(0,0,500,500);
+        
+        context.lineWidth = 1;
+        context.strokeStyle = "rgba(0, 0, 0, 0.5)";
+
+      sampleLinks.forEach(function (link) {
+        context.beginPath();
+        context.moveTo(link.source.x,link.source.y)
+        context.lineTo(link.target.x,link.target.y)
+        context.stroke();
+      })
+
+        d3.selectAll("circle.node")
+        .attr("cx", function(d) {return d.x})
+        .attr("cy", function(d) {return d.y});
+      }
+      
+      
+</script>
+  </footer>
+
+</html>
