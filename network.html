@@ -1,131 +1,132 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <title>NETWORK</title>
-  <meta charset="utf-8" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <title>NETWORK</title>
+    <meta charset = "UTF-8">
+    <script src="https://d3js.org/d3.v4.js"></script>
 </head>
-<style>
-body, html {
-    margin: 0;
-  }
-canvas {
-    padding: 0;
-    margin: auto;
-    display: block;
-    width: 500px;
-    height: 500px;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-svg {
-    padding: 0;
-    margin: auto;
-    display: block;
-    width: 500px;
-    height: 500px;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-path.country {
-    fill: gray;
-    stroke-width: 1;
-    stroke: rgb(0, 0, 0);
-    opacity: .5;
-}
-path.sample {
-    stroke: black;
-    stroke-width: 1px;
-    fill: rgb(59, 231, 217);
-    fill-opacity: .5;
-}
-line.link {
-      stroke-width: 1px;
-      stroke: black;
-      stroke-opacity: .5;
-}
-circle.node {
-  fill: rgb(78, 228, 255);
-  stroke: white;
-  stroke-width: 1px;
-}
-circle.xy {
-  fill: rgb(63, 76, 133);
-  stroke: black;
-  stroke-width: 1px;
-}
-</style>
 <body>
-<canvas height = '500' width = '500'></canvas>
-<div id="viz">
-  <svg></svg>
+<div id = "graphDiv">
 </div>
 </body>
-  <footer>
-    
 <script>
-  var linkScale = d3.scale.linear().domain([0,.9,.95,1]).range([0,10,100,1000]);
+var radius = 3;
+var height = window.innerHeight
+var graphWidth = window.innerWidth
 
-  sampleNodes = d3.range(3000).map(function(d) {
-    var datapoint = {};
-    datapoint.id = "Sample Node " + d;
+var graphCanvas = d3.select('#graphDiv').append('canvas')
+.attr('width', graphWidth + 'px')
+.attr('height', height + 'px')
+.node();
 
-    return datapoint;
-  })
-  sampleLinks = [];
-    var y = 0;
-    while (y < 1000) {
-      var randomSource = Math.floor(Math.random() * 1000);
-      var randomTarget = Math.floor(linkScale(Math.random()));
-      var linkObject = {source: sampleNodes[randomSource], target: sampleNodes[randomTarget]}
-      if (randomSource != randomTarget) {
-       sampleLinks.push(linkObject);
-      }
-      y++;
-  }
+var context = graphCanvas.getContext('2d');
+
+var div = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0)
+
+var simulation = d3.forceSimulation()
+                    .force("center", d3.forceCenter(graphWidth / 2, height / 2))
+                    .force("x", d3.forceX(graphWidth / 2).strength(0.1))
+                    .force("y", d3.forceY(height / 2).strength(0.1))
+                    .force("charge", d3.forceManyBody().strength(-50).distanceMin([100]).distanceMax(1000))
+                    .force("link", d3.forceLink().strength(1).id(function(d) {return d.id;}))
+                    .alphaTarget(0)
+                    .alphaDecay(0.05)
+
+var transform = d3.zoomIdentity;
+
+d3.json("data.json", function(error, data) {
+  initGraph(data)
+
+
+  function initGraph(tempData){
+
+    function zoomed(){
+      console.log("zooming")
+      transform = d3.event.transform;
+      simulationUpdate();
+    }
+
+    d3.select(graphCanvas)
+        .call(d3.drag().subject(dragsubject).on("start", dragstarted).on("drag", dragged).on("end", dragended))
+        .call(d3.zoom().scaleExtent([1 / 10, 8]).on("zoom", zoomed))
+
   
-      force = d3.layout.force()
-      .size([500,500])
-      .gravity(.5)
-      .nodes(sampleNodes)
-      .links(sampleLinks)
-      .on("tick", forceTick);
 
-      d3.select("svg").selectAll("circle.node")
-      .data(sampleNodes)
-      .enter()
-      .append("circle")
-      .attr("r", 3)
-      .attr("class", "node");
-      
-      force.start();
-      
-      function forceTick() {
-      	var context = d3.select("canvas").node().getContext("2d");
-        context.clearRect(0,0,500,500);
-        
-        context.lineWidth = 1;
-        context.strokeStyle = "rgba(0, 0, 0, 0.5)";
+  function dragsubject() {
+    var i,
+    x = transform.invertX(d3.event.x),
+    y = transform.invertY(d3.event.y),
+    dx,
+    dy;
+    for (i = tempData.nodes.length - 1; i >= 0; --i) {
+    node = tempData.nodes[i];
+      dx = x - node.x;
+      dy = y - node.y;
 
-      sampleLinks.forEach(function (link) {
-        context.beginPath();
-        context.moveTo(link.source.x,link.source.y)
-        context.lineTo(link.target.x,link.target.y)
-        context.stroke();
-      })
+      if (dx * dx + dy * dy < radius * radius) {
 
-        d3.selectAll("circle.node")
-        .attr("cx", function(d) {return d.x})
-        .attr("cy", function(d) {return d.y});
+        node.x =  transform.applyX(node.x);
+        node.y = transform.applyY(node.y);
+
+        return node;
       }
-      
-      
-</script>
-  </footer>
+    }
+  }
 
+  function dragstarted() {
+    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+    d3.event.subject.fx = transform.invertX(d3.event.x);
+    d3.event.subject.fy = transform.invertY(d3.event.y);
+  }
+
+  function dragged() {
+    d3.event.subject.fx = transform.invertX(d3.event.x);
+    d3.event.subject.fy = transform.invertY(d3.event.y);
+  }
+
+  function dragended() {
+    if (!d3.event.active) simulation.alphaTarget(0);
+    d3.event.subject.fx = null;
+    d3.event.subject.fy = null;
+  }
+
+  simulation.nodes(tempData.nodes)
+              .on("tick",simulationUpdate);
+
+  simulation.force("link")
+            .links(tempData.links);
+
+  function simulationUpdate(){
+      context.save();
+
+      context.clearRect(0, 0, graphWidth, height);
+      context.translate(transform.x, transform.y);
+      context.scale(transform.k, transform.k);
+
+      tempData.links.forEach(function(d) {
+            context.beginPath();
+            context.moveTo(d.source.x, d.source.y);
+            context.lineTo(d.target.x, d.target.y);
+            context.stroke();
+        });
+
+        // Draw the nodes
+        tempData.nodes.forEach(function(d, i) {
+
+            context.beginPath();
+            context.arc(d.x, d.y, radius, 0, 2 * Math.PI, true);
+            context.fillStyle = "rgb(78, 228, 255)"
+            context.fill();
+            context.fillStyle = "rgb(0, 0, 0)"
+            context.fillText(d.id, d.x+10, d.y+3)
+        });
+
+        context.restore();
+//        transform = d3.zoomIdentity;
+  }
+}
+})
+</script>
 </html>
