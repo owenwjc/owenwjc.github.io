@@ -4,15 +4,92 @@
   <title>NETWORK</title>
   <meta charset = "UTF-8">
   <script src="https://d3js.org/d3.v4.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.js"></script>
 </head>
+<style>
+   body, canvas{
+      margin: 0;
+      padding: 0;
+      background-color: #222222;
+   }
+</style>
 <body>
+<div id = "lineDiv">
+</div>
 <div id = "networkDiv">
 </div>
-<div id = "lineDiv">
+<div id = "bullishCloud">
+</div>
+<div id = "neutralCloud">
+</div>
+<div id = "bearishCloud">
 </div>
 </body>
 <script src = "scripts/networkGraph.js"></script>
+<script src = "scripts/wordCloud.js"></script>
 <script>
 
+var margin = {top: 10, right: 30, bottom: 30, left: 50};
+var height = 1000 - margin.top - margin.bottom;
+var width = 1000 - margin.left - margin.right;
+var lineSvg = d3.select('#lineDiv').append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
+var x = d3.scaleTime().range([0,width]);
+var xAxis = d3.axisBottom().scale(x);
+lineSvg.append("g")
+   .attr("transform", "translate(0," + height + ")")
+   .attr("class", "myXaxis")
+
+var y = d3.scaleLinear().range([0, height]);
+var yAxis = d3.axisLeft().scale(y);
+lineSvg.append("g")
+   .attr("class", "myYaxis")
+
+d3.json("data/lineBar.json", function(error, data) {
+  spydata = data.SPY
+  spydata = d3.map(spydata).entries()
+
+  var parse = d3.timeParse('%s');
+
+  spydata.forEach(function(d) {
+    d.key = parse(d.key * 10**-9)
+  })
+
+  function update(stockdata){
+    x.domain([d3.min(stockdata, function(d) {return d.key}), d3.max(stockdata, function(d) {return d.key})]);
+    lineSvg.selectAll(".myXaxis")
+       .transition()
+       .duration(3000)
+       .call(xAxis);
+
+    y.domain([d3.max(stockdata, function(d) {return d.value.Open}), 0]);
+    lineSvg.selectAll(".myYaxis")
+       .transition()
+       .duration(3000)
+       .call(yAxis)
+    
+    var u = lineSvg.selectAll(".lineTest")
+               .data([stockdata], function(d) {return d.key})
+
+    u.enter()
+     .append("path")
+     .attr("class", "lineTest")
+     .merge(u)
+     .transition()
+     .duration(3000)
+     .attr("d", d3.line()
+      .x(function(d) {return x(d.key);})
+      .y(function(d) {return y(d.value.Open);}))
+      .attr("fill", "none")
+      .attr("stroke", "cyan")
+      .attr("stroke-width", 2.5)
+  }
+
+  update(spydata)
+})
 </script>
 </html>

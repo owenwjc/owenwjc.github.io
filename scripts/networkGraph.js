@@ -1,6 +1,6 @@
 var radius = 1;
-var height = 1000
-var graphWidth = 1000
+var graphWidth = window.innerWidth;
+var height = window.innerHeight/2;
 
 var industrydict = {'Auto': "#f0a8a8",
  'Travel': "#f0d1a8",
@@ -41,7 +41,6 @@ d3.json("data/network.json", function(error, data) {
   console.log(data)
   initGraph(data)
 
-
   function initGraph(tempData){
 
     function zoomed(){
@@ -51,51 +50,8 @@ d3.json("data/network.json", function(error, data) {
     }
 
     d3.select(graphCanvas)
-      .call(d3.drag().subject(dragsubject)/*
-                     .on("start", dragstarted)
-                     .on("drag", dragged)
-                     .on("end", dragended)*/)
       .call(d3.zoom().scaleExtent([1 / 10, 8]).on("zoom", zoomed))
 
-  
-
-  function dragsubject() {
-    var i,
-    x = transform.invertX(d3.event.x),
-    y = transform.invertY(d3.event.y),
-    dx,
-    dy;
-    for (i = tempData.nodes.length - 1; i >= 0; --i) {
-    node = tempData.nodes[i];
-      dx = x - node.x;
-      dy = y - node.y;
-
-      if (dx * dx + dy * dy < radius * radius) {
-
-        node.x =  transform.applyX(node.x);
-        node.y = transform.applyY(node.y);
-
-        return node;
-      }
-    }
-  }
-
-  /*function dragstarted() {
-    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-    d3.event.subject.fx = transform.invertX(d3.event.x);
-    d3.event.subject.fy = transform.invertY(d3.event.y);
-  }
-
-  function dragged() {
-    d3.event.subject.fx = transform.invertX(d3.event.x);
-    d3.event.subject.fy = transform.invertY(d3.event.y);
-  }
-
-  function dragended() {
-    if (!d3.event.active) simulation.alphaTarget(0);
-    d3.event.subject.fx = null;
-    d3.event.subject.fy = null;
-  }*/
 
   simulation.nodes(tempData.nodes)
               .on("tick",simulationUpdate);
@@ -105,10 +61,17 @@ d3.json("data/network.json", function(error, data) {
             .strength(function(d) {return 0.001 +(d.weight-1)*(0.049)/(1730)});
 
   function simulationUpdate(){
-      context.save();
+
+    graphWidth = window.innerWidth
+    height = window.innerHeight/2;
+    graphCanvas.width = graphWidth
+    graphCanvas.height = height
+    context = graphCanvas.getContext('2d');
+
+    context.save()
 
       context.clearRect(0, 0, graphWidth, height);
-      context.fillStyle = "black";
+      context.fillStyle = "#111111";
       context.fillRect(0, 0, graphWidth, height);
       context.translate(transform.x, transform.y);
       context.scale(transform.k, transform.k);
@@ -136,5 +99,6 @@ d3.json("data/network.json", function(error, data) {
 
         context.restore();
   }
+  window.addEventListener('resize', simulationUpdate)
 }
 })
