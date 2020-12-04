@@ -2,22 +2,24 @@ var radius = 1;
 var graphWidth = window.innerWidth;
 var height = window.innerHeight/2;
 
-var industrydict = {'Auto': "#f0a8a8",
- 'Travel': "#f0d1a8",
- 'Food distribution': "#ddf0a8",
- 'Agriculture': "#b9f0a8",
- 'Media': "#a8f0c0",
- 'Tech': "#5ba4b1",
- 'Aerospace': "#a8f0da",
- 'Stock Market Index': "#a8ebf0",
- 'Pharm': "#a8d9f0",
- 'Services': "#a8aff0",
- 'Goods': "#bea8f0",
- 'Finance': "#e2a8f0",
- 'Real Estate': "#f0a8de",
- 'Department Stores': "#f0a8c4",
- 'Utilities': "#aaf0a8",
- 'Oil': "#f0a8f0"};
+ var colorCat = ["#3d9cf0",
+ "#ed47cf",
+ "#04fcf4",
+ "#ca58f4",
+ "#1288da",
+ "#ea5da0",
+ "#2e8bf3",
+ "#db7bd0",
+ "#447cfe",
+ "#cd6ee4",
+ "#5e90e9",
+ "#956ff8",
+ "#7c89e9",
+ "#b98ff0",
+ "#6c81f4",
+ "#9d77d9"]
+
+ var fill = d3.scaleOrdinal(colorCat)
 
 var graphCanvas = d3.select('#networkDiv').append('canvas')
                     .attr('width', graphWidth + 'px')
@@ -38,7 +40,6 @@ var simulation = d3.forceSimulation()
 var transform = d3.zoomIdentity;
 
 d3.json("data/network.json", function(error, data) {
-  console.log(data)
   initGraph(data)
 
   function initGraph(tempData){
@@ -71,8 +72,6 @@ d3.json("data/network.json", function(error, data) {
     context.save()
 
       context.clearRect(0, 0, graphWidth, height);
-      context.fillStyle = "#111111";
-      context.fillRect(0, 0, graphWidth, height);
       context.translate(transform.x, transform.y);
       context.scale(transform.k, transform.k);
 
@@ -90,7 +89,7 @@ d3.json("data/network.json", function(error, data) {
             radius = 1 + ((d.weight-25)*(6.5)/(8821))
             context.beginPath();
             context.arc(d.x, d.y, radius, 0, 2 * Math.PI, true);
-            context.fillStyle = industrydict[d.Industry];
+            context.fillStyle = fill(d.Industry);
             context.fill();
             context.fillStyle = "white"
             context.font = '5px Roboto'

@@ -5,16 +5,34 @@
   <meta charset = "UTF-8">
   <script src="https://d3js.org/d3.v4.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <style>
-   body, canvas{
+   body{
+      background-color: #161616;
+   }
+   canvas{
       margin: 0;
       padding: 0;
-      background-color: #222222;
+      background-color: #0c0c0c;
+   }
+   #lineDiv{
+      background-color: #0e2629
    }
 </style>
 <body>
 <div id = "lineDiv">
+   <div class="btn-group-vertical btn-group-toggle" id="options" data-toggle="buttons">
+      <label class="btn btn-primary active">
+        <input type="checkbox" autocomplete="off" value="SPY" name="ticker" checked> SPY
+      </label>
+      <label class="btn btn-primary active">
+         <input type="checkbox" autocomplete="off" value="AMZN" name="ticker" checked> AMZN
+       </label>
+       <label class="btn btn-primary active">
+         <input type="checkbox" autocomplete="off" value="NKLA" name="ticker" checked> NKLA
+       </label>
+    </div>
 </div>
 <div id = "networkDiv">
 </div>
@@ -25,6 +43,9 @@
 <div id = "bearishCloud">
 </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src = "scripts/networkGraph.js"></script>
 <script src = "scripts/wordCloud.js"></script>
 <script>
@@ -82,14 +103,21 @@ d3.json("data/lineBar.json", function(error, data) {
      .transition()
      .duration(3000)
      .attr("d", d3.line()
-      .x(function(d) {return x(d.key);})
-      .y(function(d) {return y(d.value.Open);}))
-      .attr("fill", "none")
-      .attr("stroke", "cyan")
-      .attr("stroke-width", 2.5)
+     .x(function(d) {return x(d.key);})
+     .y(function(d) {return y(d.value.Open);}))
+     .attr("fill", "none")
+     .attr("stroke", "cyan")
+     .attr("stroke-width", 2.5)
   }
 
   update(spydata)
+})
+$("#options input:checkbox").change(function(d) {
+  var fav = []
+  $.each($("input[name = 'ticker']:checked"), function() {
+      fav.push($(this).val());
+  });
+  console.log(fav.join(", "))
 })
 </script>
 </html>

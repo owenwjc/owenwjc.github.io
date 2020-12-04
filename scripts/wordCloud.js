@@ -3,7 +3,24 @@ d3.json("data/wordCloud.json", function(data) {
     width = 1000 - margin.left - margin.right,
     height = 1000 - margin.top - margin.bottom;
 
-    var fill = d3.scaleOrdinal(d3.schemeCategory20)
+    colorCat = ["#3d9cf0",
+    "#ed47cf",
+    "#04fcf4",
+    "#ca58f4",
+    "#1288da",
+    "#ea5da0",
+    "#2e8bf3",
+    "#db7bd0",
+    "#447cfe",
+    "#cd6ee4",
+    "#5e90e9",
+    "#956ff8",
+    "#7c89e9",
+    "#b98ff0",
+    "#6c81f4",
+    "#9d77d9"]
+
+    var fill = d3.scaleOrdinal(colorCat)
 
 
     var entity_list = data.bullish
@@ -57,7 +74,6 @@ d3.json("data/wordCloud.json", function(data) {
         d3cloud.start();
 
         function drawCloud(words) {
-            console.log(words)
             svg.append("g")
                 .attr("transform", "translate(" + [width >> 1, height >> 1] + ")")
                 .selectAll("text")
