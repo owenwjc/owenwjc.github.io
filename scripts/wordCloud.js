@@ -1,7 +1,7 @@
 d3.json("data/wordCloud.json", function(data) {
-    var margin = {top: 10, right: 10, bottom: 10, left: 10},
-    width = 1000 - margin.left - margin.right,
-    height = 1000 - margin.top - margin.bottom;
+    var margin = {top: 10, right: 10, bottom: 10, left: 10};
+    var width = 650-margin.left-margin.right;
+    var height = 650-margin.top-margin.bottom;
 
     colorCat = ["#3d9cf0",
     "#ed47cf",
@@ -60,12 +60,12 @@ d3.json("data/wordCloud.json", function(data) {
                         }), d3.max(entity_list, function(d) {
                             return d.size;
                         })])
-                        .range([10, 100])
+                        .range([10, 60])
             
         var d3cloud = d3.layout.cloud()
                         .size([width,height])
                         .words(entity_list)
-                        .padding(5)
+                        .padding(3)
                         .rotate(function(d) {return ~~(Math.random() * 2) * 90;})
                         .fontSize(function(d) {return sizeScale(+d.size);})
                         .font("Impact")

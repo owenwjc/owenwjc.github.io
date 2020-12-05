@@ -1,6 +1,8 @@
 var radius = 1;
-var graphWidth = window.innerWidth;
-var height = window.innerHeight/2;
+var graphWidth = window.innerHeight * 1.414;
+var height = window.innerHeight;
+
+console.log(graphWidth)
 
  var colorCat = ["#3d9cf0",
  "#ed47cf",
@@ -63,8 +65,8 @@ d3.json("data/network.json", function(error, data) {
 
   function simulationUpdate(){
 
-    graphWidth = window.innerWidth
-    height = window.innerHeight/2;
+    graphWidth = window.innerHeight * 1.414
+    height = window.innerHeight;
     graphCanvas.width = graphWidth
     graphCanvas.height = height
     context = graphCanvas.getContext('2d');

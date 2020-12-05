@@ -19,105 +19,67 @@
    #lineDiv{
       background-color: #0e2629
    }
+   h1{
+       text-align: center;
+   }
 </style>
 <body>
 <div id = "lineDiv">
    <div class="btn-group-vertical btn-group-toggle" id="options" data-toggle="buttons">
-      <label class="btn btn-primary active">
-        <input type="checkbox" autocomplete="off" value="SPY" name="ticker" checked> SPY
+      <label class="btn btn-primary">
+        <input type="checkbox" autocomplete="off" value="SPY" name="ticker"> SPY
       </label>
-      <label class="btn btn-primary active">
-         <input type="checkbox" autocomplete="off" value="AMZN" name="ticker" checked> AMZN
+      <label class="btn btn-primary">
+         <input type="checkbox" autocomplete="off" value="WMT" name="ticker"> WMT
        </label>
-       <label class="btn btn-primary active">
-         <input type="checkbox" autocomplete="off" value="NKLA" name="ticker" checked> NKLA
+       <label class="btn btn-primary">
+         <input type="checkbox" autocomplete="off" value="NKLA" name="ticker"> NKLA
        </label>
+       <label class="btn btn-primary">
+        <input type="checkbox" autocomplete="off" value="AMZN" name="ticker"> AMZN
+      </label>
+      <label class="btn btn-primary">
+        <input type="checkbox" autocomplete="off" value="DIS" name="ticker"> DIS
+      </label>
+      <label class="btn btn-primary">
+        <input type="checkbox" autocomplete="off" value="FB" name="ticker"> FB
+      </label>
+      <label class="btn btn-primary">
+        <input type="checkbox" autocomplete="off" value="SPCE" name="ticker"> SPCE
+      </label>
+      <label class="btn btn-primary">
+         <input type="checkbox" autocomplete="off" value="BA" name="ticker"> BA
+       </label>
+       <label class="btn btn-primary">
+         <input type="checkbox" autocomplete="off" value="AMD" name="ticker"> AMD
+       </label>
+       <label class="btn btn-primary">
+        <input type="checkbox" autocomplete="off" value="MSFT" name="ticker"> MSFT
+      </label>
+      <label class="btn btn-primary">
+        <input type="checkbox" autocomplete="off" value="AAPL" name="ticker"> AAPL
+      </label>
+      <label class="btn btn-primary">
+        <input type="checkbox" autocomplete="off" value="TSLA" name="ticker"> TSLA
+      </label>
     </div>
 </div>
 <div id = "networkDiv">
 </div>
-<div id = "bullishCloud">
-</div>
-<div id = "neutralCloud">
-</div>
-<div id = "bearishCloud">
+    <div class="row justify-content-center">
+        <div class="col-md-auto" id = "bullishCloud">
+        <h1 style="color:white;">Bullish</h1></div>
+        <div class = "col-md-auto" id = "neutralCloud"><h1 style="color:white;">Neutral</h1>
+        </div>
+        <div class = "col-md-auto" id = "bearishCloud"><h1 style="color:white;">Bearish</h1>
+        </div>
+    </div>
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src = "scripts/networkGraph.js"></script>
+<script src = "scripts/network.js"></script>
 <script src = "scripts/wordCloud.js"></script>
-<script>
-
-var margin = {top: 10, right: 30, bottom: 30, left: 50};
-var height = 1000 - margin.top - margin.bottom;
-var width = 1000 - margin.left - margin.right;
-var lineSvg = d3.select('#lineDiv').append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-
-var x = d3.scaleTime().range([0,width]);
-var xAxis = d3.axisBottom().scale(x);
-lineSvg.append("g")
-   .attr("transform", "translate(0," + height + ")")
-   .attr("class", "myXaxis")
-
-var y = d3.scaleLinear().range([0, height]);
-var yAxis = d3.axisLeft().scale(y);
-lineSvg.append("g")
-   .attr("class", "myYaxis")
-
-d3.json("data/lineBar.json", function(error, data) {
-  spydata = data.SPY
-  spydata = d3.map(spydata).entries()
-
-  var parse = d3.timeParse('%s');
-
-  spydata.forEach(function(d) {
-    d.key = parse(d.key * 10**-9)
-  })
-
-  function update(stockdata){
-    x.domain([d3.min(stockdata, function(d) {return d.key}), d3.max(stockdata, function(d) {return d.key})]);
-    lineSvg.selectAll(".myXaxis")
-       .transition()
-       .duration(3000)
-       .call(xAxis);
-
-    y.domain([d3.max(stockdata, function(d) {return d.value.Open}), 0]);
-    lineSvg.selectAll(".myYaxis")
-       .transition()
-       .duration(3000)
-       .call(yAxis)
-    
-    var u = lineSvg.selectAll(".lineTest")
-               .data([stockdata], function(d) {return d.key})
-
-    u.enter()
-     .append("path")
-     .attr("class", "lineTest")
-     .merge(u)
-     .transition()
-     .duration(3000)
-     .attr("d", d3.line()
-     .x(function(d) {return x(d.key);})
-     .y(function(d) {return y(d.value.Open);}))
-     .attr("fill", "none")
-     .attr("stroke", "cyan")
-     .attr("stroke-width", 2.5)
-  }
-
-  update(spydata)
-})
-$("#options input:checkbox").change(function(d) {
-  var fav = []
-  $.each($("input[name = 'ticker']:checked"), function() {
-      fav.push($(this).val());
-  });
-  console.log(fav.join(", "))
-})
-</script>
+<script src = "scripts/lineBar.js"></script>
 </html>
