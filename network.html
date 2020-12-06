@@ -24,8 +24,15 @@
    }
 </style>
 <body>
-<div id = "lineDiv">
-   <div class="btn-group-vertical btn-group-toggle" id="options" data-toggle="buttons">
+<div class="row justify-content-center">
+    <div class = col-lg-auto id = "networkDiv"></div>
+    <div class = col-sm-auto style="color:white">Supervised Trading on Key Sentiment (STonKS)<br>
+    An Exploratory Analysis of 2.3 million Reddit Comments<br>
+    Over the past year over 10 million comments have been made on reddit.com/r/wallstreetbets discussion posts.<br> I took 30% of them and ended up with just under 2.4million comments that could be marked with a sentiment value. </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-sm-auto">
+    <div class="btn-group-vertical btn-group-toggle" id="options" data-toggle="buttons">
       <label class="btn btn-primary">
         <input type="checkbox" autocomplete="off" value="SPY" name="ticker"> SPY
       </label>
@@ -63,8 +70,9 @@
         <input type="checkbox" autocomplete="off" value="TSLA" name="ticker"> TSLA
       </label>
     </div>
-</div>
-<div id = "networkDiv">
+    </div>
+    <div id = "lineDiv" class="col-lg-auto"></div>
+    <div id = "legend" class="col-sm-auto"></div>
 </div>
     <div class="row justify-content-center">
         <div class="col-md-auto" id = "bullishCloud">

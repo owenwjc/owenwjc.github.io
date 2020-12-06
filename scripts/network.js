@@ -1,8 +1,12 @@
 var radius = 1;
-var graphWidth = window.innerHeight * 1.414;
-var height = window.innerHeight;
-
-console.log(graphWidth)
+if(window.innerHeight > window.innerWidth){
+    var graphWidth = window.innerWidth;
+    var height = window.innerWidth;
+}
+else{
+    var graphWidth = (window.innerHeight*1.414);
+    var height = window.innerHeight;
+}
 
  var colorCat = ["#3d9cf0",
  "#ed47cf",
@@ -41,7 +45,7 @@ var simulation = d3.forceSimulation()
 
 var transform = d3.zoomIdentity;
 
-d3.json("data/network.json", function(error, data) {
+d3.json("data/network.json", function(data) {
   initGraph(data)
 
   function initGraph(tempData){
@@ -65,8 +69,16 @@ d3.json("data/network.json", function(error, data) {
 
   function simulationUpdate(){
 
-    graphWidth = window.innerHeight * 1.414
-    height = window.innerHeight;
+    if(window.innerHeight > window.innerWidth){
+        graphWidth = window.innerWidth;
+        height = window.innerWidth;
+    }
+    else{
+        graphWidth = (window.innerHeight*1.414);
+        height = window.innerHeight;
+    }
+
+
     graphCanvas.width = graphWidth
     graphCanvas.height = height
     context = graphCanvas.getContext('2d');
