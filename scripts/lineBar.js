@@ -1,6 +1,6 @@
-var margin = {top: 10, right: 100, bottom: 30, left: 50};
+var margin = {top: 10, right: 200, bottom: 30, left: 50};
 var graphheight = 1000 - margin.top - margin.bottom;
-var width = 1200 - margin.left - margin.right;
+var width = 1300 - margin.left - margin.right;
 
 colorLines = ["#3d9cf0",
     "#ed47cf",
@@ -71,29 +71,36 @@ d3.json("data/lineBar.json", function(data) {
     }
     else if(tickers.length == 2){
         for(var i = 0; i < thisdata[0][tickers[0]].length; i ++){
-            bardata.push({
-                'time': thisdata[0][tickers[0]][i].time,
-                'bullish0':  thisdata[0][tickers[0]][i].bullish,
-                'bearish0':  thisdata[0][tickers[0]][i].bearish,
-                'bullish1':  thisdata[0][tickers[1]][i].bullish,
-                'bearish1':  thisdata[0][tickers[1]][i].bearish
-            })
+            var pushdict = {}
+            pushdict['time'] = thisdata[0][tickers[0]][i].time
+            pushdict[tickers[0] + ' bullish'] = thisdata[0][tickers[0]][i].bullish
+            pushdict[tickers[0] + ' bearish'] = thisdata[0][tickers[0]][i].bearish
+            pushdict[tickers[1] + ' bullish'] = thisdata[0][tickers[1]][i].bullish
+            pushdict[tickers[1] + ' bearish'] = thisdata[0][tickers[1]][i].bearish
+            bardata.push(
+                pushdict
+            )
         }
-        subgroups = ['bullish0', 'bearish0', 'bullish1', 'bearish1']
+        subgroups = [tickers[0] + ' bullish', tickers[0] + ' bearish', 
+                     tickers[1] + ' bullish', tickers[1] + ' bearish']
     }
     else if(tickers.length == 3){
         for(var i = 0; i < thisdata[0][tickers[0]].length; i ++){
-            bardata.push({
-                'time': thisdata[0][tickers[0]][i].time,
-                'bullish0':  thisdata[0][tickers[0]][i].bullish,
-                'bearish0':  thisdata[0][tickers[0]][i].bearish,
-                'bullish1':  thisdata[0][tickers[1]][i].bullish,
-                'bearish1':  thisdata[0][tickers[1]][i].bearish,
-                'bullish2':  thisdata[0][tickers[2]][i].bullish,
-                'bearish2':  thisdata[0][tickers[2]][i].bearish
-            })
+            var pushdict = {}
+            pushdict['time'] = thisdata[0][tickers[0]][i].time
+            pushdict[tickers[0] + ' bullish'] = thisdata[0][tickers[0]][i].bullish
+            pushdict[tickers[0] + ' bearish'] = thisdata[0][tickers[0]][i].bearish
+            pushdict[tickers[1] + ' bullish'] = thisdata[0][tickers[1]][i].bullish
+            pushdict[tickers[1] + ' bearish'] = thisdata[0][tickers[1]][i].bearish
+            pushdict[tickers[2] + ' bullish'] = thisdata[0][tickers[2]][i].bullish
+            pushdict[tickers[2] + ' bearish'] = thisdata[0][tickers[2]][i].bearish
+            bardata.push(
+                pushdict
+            )
         }
-        subgroups = ['bullish0', 'bearish0', 'bullish1', 'bearish1', 'bullish2', 'bearish2']
+        subgroups = [tickers[0] + ' bullish', tickers[0] + ' bearish',
+                     tickers[1] + ' bullish', tickers[1] + ' bearish',
+                     tickers[2] + ' bullish', tickers[2] + ' bearish']
     }
     else{
         bardata = thisdata[0]['SPY']
@@ -230,6 +237,23 @@ d3.json("data/lineBar.json", function(data) {
                     .text(function(d) {return d.name})
                     .style("fill", function(d) {return lineColor(d.name)})
                     .style("font-size", 15)
+
+    var legend = lineSvg.selectAll("myLegend")
+                        .data(barColor.domain())
+                        .enter().append("g")
+                        .attr("class", "legend")
+                        .attr("transform", function(d, i) {return "translate(40," + ((graphheight - 18) - (i * 20)) + ")";})
+    legend.append("rect")
+          .attr("x", width - 18 + 35)
+          .attr("width", 18)
+          .attr("height", 18)
+          .style("fill", barColor);
+    legend.append("text")
+          .attr("x", width + 10 + 35)
+          .attr("y", 9)
+          .attr("dy", ".35em")
+          .attr("text-anchor", "start")
+          .text(function(d) {return d;})
   }
 
   update(tickers, normalize)
