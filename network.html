@@ -25,51 +25,67 @@
 </style>
 <body>
 <div class="row justify-content-center">
-    <div class = col-lg-auto id = "networkDiv"></div>
-    <div class = col-sm-auto style="color:white">Supervised Trading on Key Sentiment (STonKS)<br>
-    An Exploratory Analysis of 2.3 million Reddit Comments<br>
-    Over the past year over 10 million comments have been made on reddit.com/r/wallstreetbets discussion posts.<br> I took 30% of them and ended up with just under 2.4million comments that could be marked with a sentiment value. </div>
+    <div class = col-lg-9 id = "networkDiv"></div>
+    <div class = col-lg-3 style="color:white">Supervised Trading on Key Sentiment (STonKS)<br>
+    An Exploratory Analysis of 2.39 million Reddit Comments<br>
+    Over the past year over 10 million comments have been made on reddit.com/r/wallstreetbets discussion posts.<br> 
+    I took 30% of them and ended up with just under 2.4 million comments that could be marked with a sentiment value. 
+    Of which over 430 thousand comments contained at least one stock ticker or company mention and 61 thousand contained at least two tickers or mentions.
+    Within the 61 thousand comments containing two or more stock tickers 2700 unique companies were mentioned.
+    I chose to keep companies that had at least 25 mentions which took the network down to 350 nodes and 30 thousand edges.</div>
 </div>
 <div class="row justify-content-center">
     <div class="col-sm-auto">
-    <div class="btn-group-vertical btn-group-toggle" id="options" data-toggle="buttons">
-      <label class="btn btn-primary">
-        <input type="checkbox" autocomplete="off" value="SPY" name="ticker"> SPY
-      </label>
-      <label class="btn btn-primary">
-         <input type="checkbox" autocomplete="off" value="WMT" name="ticker"> WMT
-       </label>
-       <label class="btn btn-primary">
-         <input type="checkbox" autocomplete="off" value="NKLA" name="ticker"> NKLA
-       </label>
-       <label class="btn btn-primary">
-        <input type="checkbox" autocomplete="off" value="AMZN" name="ticker"> AMZN
-      </label>
-      <label class="btn btn-primary">
-        <input type="checkbox" autocomplete="off" value="DIS" name="ticker"> DIS
-      </label>
-      <label class="btn btn-primary">
-        <input type="checkbox" autocomplete="off" value="FB" name="ticker"> FB
-      </label>
-      <label class="btn btn-primary">
-        <input type="checkbox" autocomplete="off" value="SPCE" name="ticker"> SPCE
-      </label>
-      <label class="btn btn-primary">
-         <input type="checkbox" autocomplete="off" value="BA" name="ticker"> BA
-       </label>
-       <label class="btn btn-primary">
-         <input type="checkbox" autocomplete="off" value="AMD" name="ticker"> AMD
-       </label>
-       <label class="btn btn-primary">
-        <input type="checkbox" autocomplete="off" value="MSFT" name="ticker"> MSFT
-      </label>
-      <label class="btn btn-primary">
-        <input type="checkbox" autocomplete="off" value="AAPL" name="ticker"> AAPL
-      </label>
-      <label class="btn btn-primary">
-        <input type="checkbox" autocomplete="off" value="TSLA" name="ticker"> TSLA
-      </label>
-    </div>
+        <div class = "row justify-content-end">
+            <div class="btn-group-vertical btn-group-toggle" id="options" data-toggle="buttons">
+            <label class="btn btn-primary">
+                <input type="checkbox" autocomplete="off" value="SPY" name="ticker"> SPY
+            </label>
+            <label class="btn btn-primary">
+                <input type="checkbox" autocomplete="off" value="WMT" name="ticker"> WMT
+            </label>
+            <label class="btn btn-primary">
+                <input type="checkbox" autocomplete="off" value="NKLA" name="ticker"> NKLA
+            </label>
+            <label class="btn btn-primary">
+                <input type="checkbox" autocomplete="off" value="AMZN" name="ticker"> AMZN
+            </label>
+            <label class="btn btn-primary">
+                <input type="checkbox" autocomplete="off" value="DIS" name="ticker"> DIS
+            </label>
+            <label class="btn btn-primary">
+                <input type="checkbox" autocomplete="off" value="FB" name="ticker"> FB
+            </label>
+            <label class="btn btn-primary">
+                <input type="checkbox" autocomplete="off" value="SPCE" name="ticker"> SPCE
+            </label>
+            <label class="btn btn-primary">
+                <input type="checkbox" autocomplete="off" value="BA" name="ticker"> BA
+            </label>
+            <label class="btn btn-primary">
+                <input type="checkbox" autocomplete="off" value="AMD" name="ticker"> AMD
+            </label>
+            <label class="btn btn-primary">
+                <input type="checkbox" autocomplete="off" value="MSFT" name="ticker"> MSFT
+            </label>
+            <label class="btn btn-primary">
+                <input type="checkbox" autocomplete="off" value="AAPL" name="ticker"> AAPL
+            </label>
+            <label class="btn btn-primary">
+                <input type="checkbox" autocomplete="off" value="TSLA" name="ticker"> TSLA
+            </label>
+            </div>
+        </div>
+        <div class = "row align-items-end">
+            <div class = "btn-group-vertical btn-group-toggle" id="normalize" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    <input type="checkbox" autocoplete="off" value="Bars" name="normalize">Normalize Bars
+                </label>
+                <label class="btn btn-primary">
+                    <input type="checkbox" autocoplete="off" value="Lines" name="normalize">Normalize Lines
+                </label>
+            </div>
+        </div>
     </div>
     <div id = "lineDiv" class="col-lg-auto"></div>
     <div id = "legend" class="col-sm-auto"></div>

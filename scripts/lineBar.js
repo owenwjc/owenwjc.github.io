@@ -19,7 +19,7 @@ colorLines = ["#3d9cf0",
     "#6c81f4",
     "#9d77d9"]
 
-colorBars = ['#ff184c', '#ff577d', '#85ebd9', '#65dc98', '#d1f7ff', '#fe00fe', '#73fffe']
+colorBars = ['#ccffcc', '#ffaacc', '#ccaaee', '#ffffee', '#ccbbcc', '#ffaaee']
 
 var lineColor = d3.scaleOrdinal(colorLines)
 
@@ -48,55 +48,60 @@ d3.json("data/lineBar.json", function(data) {
   var tickers = ["WMT", "NKLA", "AMZN", "DIS", "FB", "SPCE", 
                 "BA", "AMD", "MSFT", "AAPL", "TSLA", "SPY"]
 
+  var normalize = []
+
   var subgroups = ['bullish', 'bearish', 'neutral']
 
   var parse = d3.utcParse("%Y-%m-%dT%H:%M:%S.%LZ");
 
-  function update(tickers){
+  function update(tickers, normalize){
+
+    var thisdata = $.extend(true, {}, data)
 
     var bardata = []
     if(tickers.length == 0){
         tickers = ["WMT", "NKLA", "AMZN", "DIS", "FB", "SPCE", 
         "BA", "AMD", "MSFT", "AAPL", "TSLA", "SPY"]
-        bardata = data[0]['SPY']
+        bardata = thisdata[0]['SPY']
         subgroups = ['bullish', 'bearish', 'neutral']
     }
     else if(tickers.length == 1){
-        bardata = data[0][tickers[0]]
+        bardata = thisdata[0][tickers[0]]
         subgroups = ['bullish', 'bearish']
     }
     else if(tickers.length == 2){
-        for(var i = 0; i < data[0][tickers[0]].length; i ++){
+        for(var i = 0; i < thisdata[0][tickers[0]].length; i ++){
             bardata.push({
-                'time': data[0][tickers[0]][i].time,
-                'bullish0':  data[0][tickers[0]][i].bullish,
-                'bearish0':  data[0][tickers[0]][i].bearish,
-                'bullish1':  data[0][tickers[1]][i].bullish,
-                'bearish1':  data[0][tickers[1]][i].bearish
+                'time': thisdata[0][tickers[0]][i].time,
+                'bullish0':  thisdata[0][tickers[0]][i].bullish,
+                'bearish0':  thisdata[0][tickers[0]][i].bearish,
+                'bullish1':  thisdata[0][tickers[1]][i].bullish,
+                'bearish1':  thisdata[0][tickers[1]][i].bearish
             })
         }
         subgroups = ['bullish0', 'bearish0', 'bullish1', 'bearish1']
     }
     else if(tickers.length == 3){
-        for(var i = 0; i < data[0][tickers[0]].length; i ++){
+        for(var i = 0; i < thisdata[0][tickers[0]].length; i ++){
             bardata.push({
-                'time': data[0][tickers[0]][i].time,
-                'bullish0':  data[0][tickers[0]][i].bullish,
-                'bearish0':  data[0][tickers[0]][i].bearish,
-                'bullish1':  data[0][tickers[1]][i].bullish,
-                'bearish1':  data[0][tickers[1]][i].bearish,
-                'bullish2':  data[0][tickers[2]][i].bullish,
-                'bearish2':  data[0][tickers[2]][i].bearish
+                'time': thisdata[0][tickers[0]][i].time,
+                'bullish0':  thisdata[0][tickers[0]][i].bullish,
+                'bearish0':  thisdata[0][tickers[0]][i].bearish,
+                'bullish1':  thisdata[0][tickers[1]][i].bullish,
+                'bearish1':  thisdata[0][tickers[1]][i].bearish,
+                'bullish2':  thisdata[0][tickers[2]][i].bullish,
+                'bearish2':  thisdata[0][tickers[2]][i].bearish
             })
         }
         subgroups = ['bullish0', 'bearish0', 'bullish1', 'bearish1', 'bullish2', 'bearish2']
     }
     else{
-        bardata = data[0]['SPY']
+        bardata = thisdata[0]['SPY']
         subgroups = ['bullish', 'bearish', 'neutral']
     }
+
+
     var barColor = d3.scaleOrdinal(colorBars).domain(subgroups)
-    var stackeddata = d3.stack().keys(subgroups)(bardata)
     
     lineSvg.selectAll("*").remove()
 
@@ -116,7 +121,7 @@ d3.json("data/lineBar.json", function(data) {
         var ticker = tickers[i]
         stockdata.push({
             name: ticker,
-            values: data[0][ticker]
+            values: thisdata[0][ticker]
         })
     }
 
@@ -130,6 +135,42 @@ d3.json("data/lineBar.json", function(data) {
             y2array.push(e.tot)
         })
     })
+
+    var stackeddata = d3.stack().keys(subgroups)(bardata)
+
+    if(normalize.length == 2){
+        stackeddata = d3.stack().keys(subgroups).offset(d3.stackOffsetExpand)(bardata)
+        y2array = [0.4]
+        stockdata.map(function(d){
+            var tickmax = Math.max.apply(Math, d.values.map(function(e){return e.Open}))
+            d.values.map(function(f) {
+                f.Open = f.Open/tickmax
+            })
+        })
+        yarray = [1]
+    }
+    else if(normalize[0] === "Bars"){
+        stackeddata = d3.stack().keys(subgroups).offset(d3.stackOffsetExpand)(bardata)
+        y2array = [0.4]
+    }
+    else if(normalize[0] === "Lines"){
+        stockdata.map(function(d){
+            var tickmax = Math.max.apply(Math, d.values.map(function(e){return e.Open}))
+            d.values.map(function(f) {
+                f.Open = f.Open/tickmax
+            })
+        })
+        yarray = [1]
+    }
+    else{
+        stockdata.map(function(d) {
+            d.values.map(function(e) {
+                xarray.push(parse(e.time))
+                yarray.push(e.Open)
+                y2array.push(e.tot)
+            })
+        })
+    }
 
     x.domain(xarray);
     var xAxis = d3.axisBottom().scale(x)
@@ -190,9 +231,11 @@ d3.json("data/lineBar.json", function(data) {
                     .style("fill", function(d) {return lineColor(d.name)})
                     .style("font-size", 15)
   }
-  update(tickers)
+
+  update(tickers, normalize)
 
   var activeTickers = []
+  var normalize = []
   $("#options input:checkbox").change(function(d) {
     if (activeTickers.includes(this.value)){
         var removedex = activeTickers.indexOf(this.value)
@@ -206,6 +249,18 @@ d3.json("data/lineBar.json", function(data) {
         $("#options").find('[value='+ '"' + removedticker + '"' + ']').prop("checked", false).parent().removeClass("active")
         activeTickers.push(this.value)
     }
-    update(activeTickers);
+    update(activeTickers, normalize);
   })
+
+  $("#normalize input:checkbox").change(function(d) {
+    if (normalize.includes(this.value)){
+        var removedex = normalize.indexOf(this.value)
+        normalize.splice(removedex, 1)
+    }
+    else{
+        normalize.push(this.value)
+    }
+    update(activeTickers, normalize)
+  })
+
 })

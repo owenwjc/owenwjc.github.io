@@ -1,4 +1,5 @@
 d3.json("data/wordCloud.json", function(data) {
+
     var margin = {top: 10, right: 10, bottom: 10, left: 10};
     var width = 650-margin.left-margin.right;
     var height = 650-margin.top-margin.bottom;
@@ -22,71 +23,118 @@ d3.json("data/wordCloud.json", function(data) {
 
     var fill = d3.scaleOrdinal(colorCat)
 
+    var tickers = ["ALL"]
 
-    var entity_list = data.bullish
-    var svg= d3.select("#bullishCloud").append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-                .attr("transform",
-                     "translate(" + margin.left + "," + margin.top + ")");
+    var bullsvg= d3.select("#bullishCloud").append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                    .attr("transform",
+                        "translate(" + margin.left + "," + margin.top + ")");
 
-    makeCloud(entity_list)
+    var bearsvg= d3.select("#bearishCloud").append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                    .attr("transform",
+                        "translate(" + margin.left + "," + margin.top + ")");
 
-    var entity_list = data.neutral
-    var svg= d3.select("#neutralCloud").append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-                .attr("transform",
-                     "translate(" + margin.left + "," + margin.top + ")");
+    var neutralsvg= d3.select("#neutralCloud").append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                    .attr("transform",
+                        "translate(" + margin.left + "," + margin.top + ")");
+    
 
-    makeCloud(entity_list)
+    function update(tickers){
 
-    var entity_list = data.bearish
-    var svg= d3.select("#bearishCloud").append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-                .attr("transform",
-                     "translate(" + margin.left + "," + margin.top + ")");
+        var thisdata = $.extend(true, {}, data)
 
-    makeCloud(entity_list)
+        bullsvg.selectAll("*").remove()
+        bearsvg.selectAll("*").remove()
+        neutralsvg.selectAll("*").remove()
 
-    function makeCloud(wordlist) {
-        var sizeScale = d3.scaleLinear()
-                        .domain([d3.min(entity_list, function(d) {
-                            return d.size
-                        }), d3.max(entity_list, function(d) {
-                            return d.size;
-                        })])
-                        .range([10, 60])
-            
-        var d3cloud = d3.layout.cloud()
-                        .size([width,height])
-                        .words(entity_list)
-                        .padding(3)
-                        .rotate(function(d) {return ~~(Math.random() * 2) * 90;})
-                        .fontSize(function(d) {return sizeScale(+d.size);})
-                        .font("Impact")
-                        .on("end", drawCloud);
+        if(tickers.length == 0){
+            tickers = ["ALL"]
+        }
+        else {
+            tickers = tickers
+        }
+
+        var worddata = {}
+
+        var bullisharray = []
+        var neutralarray = []
+        var bearisharray = []
+
+
+        for (var i = 0; i < tickers.length; i ++){
+            bullisharray = bullisharray.concat(thisdata[tickers[i]].bullish)
+            neutralarray = neutralarray.concat(thisdata[tickers[i]].neutral)
+            bearisharray = bearisharray.concat(thisdata[tickers[i]].bearish)
+        }
+        worddata['bullish'] = bullisharray
+        worddata['neutral'] = neutralarray
+        worddata['bearish'] = bearisharray
+
+        makeCloud(worddata.bullish, bullsvg)
         
-        d3cloud.start();
+        makeCloud(worddata.neutral, neutralsvg)
 
-        function drawCloud(words) {
-            svg.append("g")
-                .attr("transform", "translate(" + [width >> 1, height >> 1] + ")")
-                .selectAll("text")
-                .data(words)
-                .enter().append("text")
-                .style("font-size", function(d) { return d.size + 'px'; })
-                .style("font-family", "Impact")
-                .style("fill", function(d, i) { return fill(i); })
-                .attr("text-anchor", "middle")
-                .attr("transform", function(d) {
-                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                })
-                .text(function(d) { return d.text; });
+        makeCloud(worddata.bearish, bearsvg)
+
+        function makeCloud(wordlist, svg) {
+            var sizeScale = d3.scaleLinear()
+                            .domain(d3.extent(wordlist, function(d) {
+                                return d.size
+                            }))
+                            .range([10, 60])
+                
+            var d3cloud = d3.layout.cloud()
+                            .size([width,height])
+                            .words(wordlist)
+                            .padding(3)
+                            .rotate(function(d) {return ~~(Math.random() * 2) * 90;})
+                            .fontSize(function(d) {return sizeScale(+d.size);})
+                            .font("Impact")
+                            .on("end", drawCloud);
+            
+            d3cloud.start();
+
+            function drawCloud(words) {
+                svg.append("g")
+                    .attr("transform", "translate(" + [width >> 1, height >> 1] + ")")
+                    .selectAll("text")
+                    .data(words)
+                    .enter().append("text")
+                    .style("font-size", function(d) { return d.size + 'px'; })
+                    .style("font-family", "Impact")
+                    .style("fill", function(d, i) { return fill(i); })
+                    .attr("text-anchor", "middle")
+                    .attr("transform", function(d) {
+                        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                    })
+                    .text(function(d) { return d.text; });
+            }
         }
     }
+
+    update(tickers)
+
+    var activeTickers = []
+    $("#options input:checkbox").change(function(d) {
+    if (activeTickers.includes(this.value)){
+        var removedex = activeTickers.indexOf(this.value)
+        activeTickers.splice(removedex, 1)
+    }
+    else if (activeTickers.length < 3){
+        activeTickers.push(this.value)
+    }
+    else{
+        activeTickers.pop()
+        activeTickers.push(this.value)
+    }
+    update(activeTickers);
+    })
 })
