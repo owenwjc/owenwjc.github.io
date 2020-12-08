@@ -14,10 +14,10 @@
    canvas{
       border: 0px;
       padding: 0px;
-      background-color: #0c0c0c;
+      background-color: #161616;
    }
    #lineDiv{
-      background-color: #0e2629
+      background-color: #4b4b4b;
    }
    h1{
        text-align: center;
@@ -25,6 +25,30 @@
    .btn {border-radius: 0;}
 </style>
 <body>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-secondary">
+        <a class="navbar-brand" href="#">
+            <img src="EditedLogo.png" width="35" height="35" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class = "col-xl-9" id = "networkDiv"></div>
@@ -39,11 +63,11 @@
         </body>
     </div>
     </div>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" style="background-color: #4b4b4b;">
         <div class="col-1">
             <div class = "row justify-content-center">
                 <div class="btn-group-vertical btn-group-toggle" id="options" data-toggle="buttons">
-                    <label style="color:white">Compare</label>
+                    <label style="color:white"><br>Compare<br></label>
                     <label class="btn btn-secondary">
                         <input type="checkbox" autocomplete="off" value="SPY" name="ticker"> SPY
                     </label>
@@ -79,12 +103,12 @@
                     </label>
                     <label class="btn btn-secondary">
                         <input type="checkbox" autocomplete="off" value="TSLA" name="ticker"> TSLA
-                    </label>
+                    </label><br>
                 </div>
             </div>
             <div class = "row justify-content-center">
                 <div class = "btn-group-vertical btn-group-toggle" id="normalize" data-toggle="buttons">
-                    <label style="color: white">Normalize</label>
+                    <label style="color: white">Normalize<br></label>
                     <label class="btn btn-secondary">
                         <input type="checkbox" autocoplete="off" value="Bars" name="normalize">Bars
                     </label>

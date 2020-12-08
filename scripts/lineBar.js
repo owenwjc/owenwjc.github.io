@@ -1,4 +1,4 @@
-var margin = {top: 10, right: 250, bottom: 30, left:50};
+var margin = {top: 10, right: 150, bottom: 30, left:50};
 var graphWidth = document.getElementById('lineDiv').clientWidth - margin.left - margin.right;
 var graphHeight = Math.min(((document.getElementById('lineDiv').clientWidth * 0.707)- margin.top - margin.bottom-100), 
                            (window.innerHeight - margin.top - margin.bottom-100));
