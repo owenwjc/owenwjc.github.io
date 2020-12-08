@@ -1,6 +1,7 @@
-var margin = {top: 10, right: 200, bottom: 30, left: 50};
-var graphheight = 1000 - margin.top - margin.bottom;
-var width = 1300 - margin.left - margin.right;
+var margin = {top: 10, right: 250, bottom: 30, left:50};
+var graphWidth = document.getElementById('lineDiv').clientWidth - margin.left - margin.right;
+var graphHeight = Math.min(((document.getElementById('lineDiv').clientWidth * 0.707)- margin.top - margin.bottom-100), 
+                           (window.innerHeight - margin.top - margin.bottom-100));
 
 colorLines = ["#3d9cf0",
     "#ed47cf",
@@ -24,39 +25,38 @@ colorBars = ['#ccffcc', '#ffaacc', '#ccaaee', '#ffffee', '#ccbbcc', '#ffaaee']
 var lineColor = d3.scaleOrdinal(colorLines)
 
 var lineSvg = d3.select('#lineDiv').append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", graphheight + margin.top + margin.bottom)
-                .append("g")
-                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
-var legendSvg = d3.select('#legend').append("svg")
-                  .attr("width", 100)
-                  .attr("height", graphheight+margin.top+margin.bottom)
-                  .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+var tickers = ["WMT", "NKLA", "AMZN", "DIS", "FB", "SPCE", 
+"BA", "AMD", "MSFT", "AAPL", "TSLA", "SPY"]
 
-var x = d3.scaleBand().range([0,width]);
-
-var y = d3.scaleLinear().range([0, graphheight]);
-var yAxis = d3.axisLeft().scale(y);
-
-var y2 = d3.scaleLinear().range([0, graphheight]);
-var y2Axis = d3.axisRight().scale(y2);
 
 d3.json("data/lineBar.json", function(data) {
-
-  var tickers = ["WMT", "NKLA", "AMZN", "DIS", "FB", "SPCE", 
-                "BA", "AMD", "MSFT", "AAPL", "TSLA", "SPY"]
-
-  var normalize = []
 
   var subgroups = ['bullish', 'bearish', 'neutral']
 
   var parse = d3.utcParse("%Y-%m-%dT%H:%M:%S.%LZ");
 
   function update(tickers, normalize){
+    lineSvg.selectAll("*").remove()
 
-    var thisdata = $.extend(true, {}, data)
+    graphWidth = document.getElementById('lineDiv').clientWidth - margin.left - margin.right;
+    graphHeight = Math.min(((document.getElementById('lineDiv').clientWidth * 0.707)- margin.top - margin.bottom-100), 
+                           (window.innerHeight - margin.top - margin.bottom-100));
+
+    lineSvg.attr("width", graphWidth + margin.left + margin.right)
+            .attr("height", graphHeight + margin.top + margin.bottom)
+            .append("g")
+    //lineSvg.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
+    var x = d3.scaleBand().range([0 + margin.left,graphWidth]);
+
+    var y = d3.scaleLinear().range([0, graphHeight]);
+    var yAxis = d3.axisLeft().scale(y);
+
+    var y2 = d3.scaleLinear().range([0, graphHeight]);
+    var y2Axis = d3.axisRight().scale(y2);
+
+    thisdata = $.extend(true, {}, data)
 
     var bardata = []
     if(tickers.length == 0){
@@ -109,18 +109,17 @@ d3.json("data/lineBar.json", function(data) {
 
 
     var barColor = d3.scaleOrdinal(colorBars).domain(subgroups)
-    
-    lineSvg.selectAll("*").remove()
 
     lineSvg.append("g")
-   .attr("transform", "translate(0," + graphheight + ")")
+   .attr("transform", "translate(" + margin.left + "," + graphHeight + ")")
    .attr("class", "myXaxis")
 
     lineSvg.append("g")
+   .attr("transform", "translate(" + margin.left + "," + "0)")
    .attr("class", "myYaxis")
 
    lineSvg.append("g")
-   .attr("transform", "translate(" + width + "," + "0)")
+   .attr("transform", "translate(" + (graphWidth) + "," + "0)")
    .attr("class", "myY2axis")
 
     var stockdata = [];
@@ -242,24 +241,24 @@ d3.json("data/lineBar.json", function(data) {
                         .data(barColor.domain())
                         .enter().append("g")
                         .attr("class", "legend")
-                        .attr("transform", function(d, i) {return "translate(40," + ((graphheight - 18) - (i * 20)) + ")";})
+                        .attr("transform", function(d, i) {return "translate(40," + ((graphHeight - 18) - (i * 20)) + ")";})
     legend.append("rect")
-          .attr("x", width - 18 + 35)
+          .attr("x", graphWidth - 18 + 35)
           .attr("width", 18)
           .attr("height", 18)
           .style("fill", barColor);
     legend.append("text")
-          .attr("x", width + 10 + 35)
+          .attr("x", graphWidth + 10 + 35)
           .attr("y", 9)
           .attr("dy", ".35em")
           .attr("text-anchor", "start")
           .text(function(d) {return d;})
   }
 
+  var normalize = []
+  var activeTickers = []
   update(tickers, normalize)
 
-  var activeTickers = []
-  var normalize = []
   $("#options input:checkbox").change(function(d) {
     if (activeTickers.includes(this.value)){
         var removedex = activeTickers.indexOf(this.value)
@@ -286,5 +285,6 @@ d3.json("data/lineBar.json", function(data) {
     }
     update(activeTickers, normalize)
   })
-
+  window.addEventListener('resize', function(){
+    update(activeTickers, normalize)})
 })

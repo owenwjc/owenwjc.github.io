@@ -12,8 +12,8 @@
       background-color: #161616;
    }
    canvas{
-      margin: 0;
-      padding: 0;
+      border: 0px;
+      padding: 0px;
       background-color: #0c0c0c;
    }
    #lineDiv{
@@ -22,80 +22,87 @@
    h1{
        text-align: center;
    }
+   .btn {border-radius: 0;}
 </style>
 <body>
-<div class="row justify-content-center">
-    <div class = col-lg-9 id = "networkDiv"></div>
-    <div class = col-lg-3 style="color:white">Supervised Trading on Key Sentiment (STonKS)<br>
-    An Exploratory Analysis of 2.39 million Reddit Comments<br>
-    Over the past year over 10 million comments have been made on reddit.com/r/wallstreetbets discussion posts.<br> 
-    I took 30% of them and ended up with just under 2.4 million comments that could be marked with a sentiment value. 
-    Of which over 430 thousand comments contained at least one stock ticker or company mention and 61 thousand contained at least two tickers or mentions.
-    Within the 61 thousand comments containing two or more stock tickers 2700 unique companies were mentioned.
-    I chose to keep companies that had at least 25 mentions which took the network down to 350 nodes and 30 thousand edges.</div>
-</div>
-<div class="row justify-content-center">
-    <div class="col-sm-auto">
-        <div class = "row justify-content-end">
-            <div class="btn-group-vertical btn-group-toggle" id="options" data-toggle="buttons">
-            <label class="btn btn-primary">
-                <input type="checkbox" autocomplete="off" value="SPY" name="ticker"> SPY
-            </label>
-            <label class="btn btn-primary">
-                <input type="checkbox" autocomplete="off" value="WMT" name="ticker"> WMT
-            </label>
-            <label class="btn btn-primary">
-                <input type="checkbox" autocomplete="off" value="NKLA" name="ticker"> NKLA
-            </label>
-            <label class="btn btn-primary">
-                <input type="checkbox" autocomplete="off" value="AMZN" name="ticker"> AMZN
-            </label>
-            <label class="btn btn-primary">
-                <input type="checkbox" autocomplete="off" value="DIS" name="ticker"> DIS
-            </label>
-            <label class="btn btn-primary">
-                <input type="checkbox" autocomplete="off" value="FB" name="ticker"> FB
-            </label>
-            <label class="btn btn-primary">
-                <input type="checkbox" autocomplete="off" value="SPCE" name="ticker"> SPCE
-            </label>
-            <label class="btn btn-primary">
-                <input type="checkbox" autocomplete="off" value="BA" name="ticker"> BA
-            </label>
-            <label class="btn btn-primary">
-                <input type="checkbox" autocomplete="off" value="AMD" name="ticker"> AMD
-            </label>
-            <label class="btn btn-primary">
-                <input type="checkbox" autocomplete="off" value="MSFT" name="ticker"> MSFT
-            </label>
-            <label class="btn btn-primary">
-                <input type="checkbox" autocomplete="off" value="AAPL" name="ticker"> AAPL
-            </label>
-            <label class="btn btn-primary">
-                <input type="checkbox" autocomplete="off" value="TSLA" name="ticker"> TSLA
-            </label>
-            </div>
-        </div>
-        <div class = "row align-items-end">
-            <div class = "btn-group-vertical btn-group-toggle" id="normalize" data-toggle="buttons">
-                <label class="btn btn-primary">
-                    <input type="checkbox" autocoplete="off" value="Bars" name="normalize">Normalize Bars
-                </label>
-                <label class="btn btn-primary">
-                    <input type="checkbox" autocoplete="off" value="Lines" name="normalize">Normalize Lines
-                </label>
-            </div>
-        </div>
-    </div>
-    <div id = "lineDiv" class="col-lg-auto"></div>
-    <div id = "legend" class="col-sm-auto"></div>
-</div>
+<div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-auto" id = "bullishCloud">
-        <h1 style="color:white;">Bullish</h1></div>
-        <div class = "col-md-auto" id = "neutralCloud"><h1 style="color:white;">Neutral</h1>
+        <div class = "col-xl-9" id = "networkDiv"></div>
+        <div class = "col-xl-3" style="color:white;">
+        <h2>Supervised Trading on Key Sentiment (STonKS)</h2>
+        <h3>An Exploratory Analysis of 2.39 million Reddit Comments</h3>
+        <body>Over the past year over 10 million comments have been made on reddit.com/r/wallstreetbets discussion posts.<br> 
+        I took 30% of them and ended up with just under 2.4 million comments that could be marked with a sentiment value. 
+        Of which over 430 thousand comments contained at least one stock ticker or company mention and 61 thousand contained at least two tickers or mentions.
+        Within the 61 thousand comments containing two or more stock tickers 2700 unique companies were mentioned.
+        I chose to keep companies that had at least 25 mentions which took the network down to 350 nodes and 30 thousand edges.
+        </body>
+    </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-1">
+            <div class = "row justify-content-center">
+                <div class="btn-group-vertical btn-group-toggle" id="options" data-toggle="buttons">
+                    <label style="color:white">Compare</label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocomplete="off" value="SPY" name="ticker"> SPY
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocomplete="off" value="WMT" name="ticker"> WMT
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocomplete="off" value="NKLA" name="ticker"> NKLA
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocomplete="off" value="AMZN" name="ticker"> AMZN
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocomplete="off" value="DIS" name="ticker"> DIS
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocomplete="off" value="FB" name="ticker"> FB
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocomplete="off" value="SPCE" name="ticker"> SPCE
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocomplete="off" value="BA" name="ticker"> BA
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocomplete="off" value="AMD" name="ticker"> AMD
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocomplete="off" value="MSFT" name="ticker"> MSFT
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocomplete="off" value="AAPL" name="ticker"> AAPL
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocomplete="off" value="TSLA" name="ticker"> TSLA
+                    </label>
+                </div>
+            </div>
+            <div class = "row justify-content-center">
+                <div class = "btn-group-vertical btn-group-toggle" id="normalize" data-toggle="buttons">
+                    <label style="color: white">Normalize</label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocoplete="off" value="Bars" name="normalize">Bars
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="checkbox" autocoplete="off" value="Lines" name="normalize">Lines
+                    </label>
+                </div>
+            </div>
         </div>
-        <div class = "col-md-auto" id = "bearishCloud"><h1 style="color:white;">Bearish</h1>
+        <div id = "lineDiv" class="col-11"></div>
+    </div>
+        <div class="row justify-content-center">
+            <div class="col-auto" id = "bullishCloud"><h1 style="color:white;">Bullish</h1>
+            </div>
+            <div class = "col-auto" id = "neutralCloud"><h1 style="color:white;">Neutral</h1>
+            </div>
+            <div class = "col-auto" id = "bearishCloud"><h1 style="color:white;">Bearish</h1>
+            </div>
         </div>
     </div>
 </div>

@@ -1,12 +1,7 @@
 var radius = 1;
-if(window.innerHeight > window.innerWidth){
-    var graphWidth = window.innerWidth;
-    var height = window.innerWidth;
-}
-else{
-    var graphWidth = (window.innerHeight*1.414);
-    var height = window.innerHeight;
-}
+
+var networkWidth = document.getElementById('networkDiv').clientWidth - 30;
+var networkHeight = Math.min((networkWidth * 0.707)-100, window.innerHeight-100)
 
  var colorCat = ["#3d9cf0",
  "#ed47cf",
@@ -28,16 +23,16 @@ else{
  var fill = d3.scaleOrdinal(colorCat)
 
 var graphCanvas = d3.select('#networkDiv').append('canvas')
-                    .attr('width', graphWidth + 'px')
-                    .attr('height', height + 'px')
+                    .attr('width', networkWidth + 'px')
+                    .attr('networkHeight', networkHeight + 'px')
                     .node();
 
 var context = graphCanvas.getContext('2d');
 
 var simulation = d3.forceSimulation()
-                   .force("center", d3.forceCenter(graphWidth / 2, height / 2))
-                   .force("x", d3.forceX(graphWidth / 2).strength(0.1))
-                   .force("y", d3.forceY(height / 2).strength(0.1))
+                   .force("center", d3.forceCenter(networkWidth / 2, networkHeight / 2))
+                   .force("x", d3.forceX(networkWidth / 2).strength(0.1))
+                   .force("y", d3.forceY(networkHeight / 2).strength(0.1))
                    .force("charge", d3.forceManyBody().strength(-250))
                    .force("link", d3.forceLink().id(function(d) {return d.id;}))
                    .alphaTarget(0)
@@ -51,13 +46,12 @@ d3.json("data/network.json", function(data) {
   function initGraph(tempData){
 
     function zoomed(){
-      console.log("zooming")
       transform = d3.event.transform;
       simulationUpdate();
     }
 
     d3.select(graphCanvas)
-      .call(d3.zoom().scaleExtent([1 / 10, 8]).on("zoom", zoomed))
+      .call(d3.zoom().scaleExtent([0.5, 20]).on("zoom", zoomed))
 
 
   simulation.nodes(tempData.nodes)
@@ -69,23 +63,17 @@ d3.json("data/network.json", function(data) {
 
   function simulationUpdate(){
 
-    if(window.innerHeight > window.innerWidth){
-        graphWidth = window.innerWidth;
-        height = window.innerWidth;
-    }
-    else{
-        graphWidth = (window.innerHeight*1.414);
-        height = window.innerHeight;
-    }
+    networkWidth = document.getElementById('networkDiv').clientWidth - 30;
+    networkHeight = Math.min((networkWidth * 0.707)-100, window.innerHeight-100)
 
 
-    graphCanvas.width = graphWidth
-    graphCanvas.height = height
+    graphCanvas.width = networkWidth
+    graphCanvas.height = networkHeight
     context = graphCanvas.getContext('2d');
 
     context.save()
 
-      context.clearRect(0, 0, graphWidth, height);
+      context.clearRect(0, 0, networkWidth, networkHeight);
       context.translate(transform.x, transform.y);
       context.scale(transform.k, transform.k);
 
