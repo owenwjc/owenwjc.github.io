@@ -1,8 +1,8 @@
 d3.json("data/wordCloud.json", function(data) {
 
     var margin = {top: 10, right: 10, bottom: 10, left: 10};
-    var width = 650-margin.left-margin.right;
-    var height = 650-margin.top-margin.bottom;
+    var width = 600-margin.left-margin.right;
+    var height = 600-margin.top-margin.bottom;
 
     colorCat = ["#3d9cf0",
     "#ed47cf",

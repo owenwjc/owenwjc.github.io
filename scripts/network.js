@@ -1,6 +1,6 @@
 var radius = 1;
 
-var networkWidth = document.getElementById('networkDiv').clientWidth - 30;
+var networkWidth = document.getElementById('networkDiv').clientWidth-30;
 var networkHeight = Math.min((networkWidth * 0.707)-100, window.innerHeight-100)
 
  var colorCat = ["#3d9cf0",
@@ -63,7 +63,7 @@ d3.json("data/network.json", function(data) {
 
   function simulationUpdate(){
 
-    networkWidth = document.getElementById('networkDiv').clientWidth - 30;
+    networkWidth = document.getElementById('networkDiv').clientWidth-30;
     networkHeight = Math.min((networkWidth * 0.707)-100, window.innerHeight-100)
 
 

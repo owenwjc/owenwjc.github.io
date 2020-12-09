@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>NETWORK</title>
+  <title>STonKS</title>
   <meta charset = "UTF-8">
   <script src="https://d3js.org/d3.v4.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="icon" href="EditedLogo.png">
 </head>
 <style>
    body{
@@ -23,10 +24,18 @@
        text-align: center;
    }
    .btn {border-radius: 0;}
+   p{
+       color: white;
+   }
+   @media (min-width: 1200px){
+       .container{
+           max-width: 1920px;
+       }
+   }
 </style>
 <body>
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-secondary">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/index.html">
             <img src="EditedLogo.png" width="35" height="35" alt="">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,39 +44,58 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="">STonKS<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
+              <a class="nav-link" href="#">How it Works</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Pricing</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#">Disabled</a>
+              <a class="nav-link" href="#">Does it Work</a>
             </li>
           </ul>
         </div>
       </nav>
-<div class="container-fluid">
+<div class="container">
+    <div class = "row justify-content-center">
+        <div class = "text-center" style="color: white; margin-top:50px; margin-bottom:30px">
+            <h2>Supervised Trading on Key Sentiment (STonKS)</h2>
+            <h5>An Exploratory Analysis of 2.39 million Reddit Comments</h5>
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class = "col-xl-9" id = "networkDiv"></div>
-        <div class = "col-xl-3" style="color:white;">
-        <h2>Supervised Trading on Key Sentiment (STonKS)</h2>
-        <h3>An Exploratory Analysis of 2.39 million Reddit Comments</h3>
-        <body>Over the past year over 10 million comments have been made on reddit.com/r/wallstreetbets discussion posts.<br> 
-        I took 30% of them and ended up with just under 2.4 million comments that could be marked with a sentiment value. 
-        Of which over 430 thousand comments contained at least one stock ticker or company mention and 61 thousand contained at least two tickers or mentions.
-        Within the 61 thousand comments containing two or more stock tickers 2700 unique companies were mentioned.
-        I chose to keep companies that had at least 25 mentions which took the network down to 350 nodes and 30 thousand edges.
-        </body>
+        <div class = "col-xl-3">
+            <p>Between October 1st 2019 and October 1st 2020 more than 10 million discussion comments were made on reddit's wallstreetbets, an investment subreddit home to 1.7 million hopeful gamblers.
+                This community, due to a multitude of reasons namely quarantine, saw a meteoric rise during the past year almost tripling in subscribers.
+                With a large community that actively talks about their next trades the discussion posts of WSB make an ideal playground to apply sentiment analysis and compare sentiment to the stocks that are being discussed.
+                I took 30% of the discussion comments and after removing all the deleted comments and nontext comments I had 2.4 million comments that could be marked with a sentiment value. 
+                Of which over 430 thousand comments contained at least one stock ticker or company mention and 61 thousand contained at least two tickers or mentions.
+                Within the 61 thousand comments containing two or more stock tickers 2700 unique companies were mentioned.
+                I chose to keep companies that had at least 25 mentions which took the network down to 350 nodes and 30 thousand edges.
+            </p>
+        </div>
     </div>
+    <div class = "row justify-content-center">
+        <div class = "col-12">
+            <p><br>
+                The network graph above represents the most common connections between companies made in the comments of WSB and some interesting patterns arise.
+                For example there are strong connections between NKLA, TSLA, and GM since NKLA and GM announced a partnership agreement and NKLA's main competitor is TSLA.
+                Another example are the airlines UAL, LUV, DAL, and AAL since they were all negatively affected by Covid in the same way and were thus mentioned in comments together.
+                While exploring the network of comment mentions is interesting it doesn't really lead to any actionable insights.
+                To gain a better understanding of my dataset I took the 11 most mentioned companies and SPY (WSB's index of choice) and graphed their stock performance against their respective comment volume and makeup.
+                Since SPY is an whole market index I chose to include the sentiment data from every comment rather than just the ones mentioning SPY.
+                To get the best visualization of overall market performance vs sentiment choose SPY in compare, normalize Bars, and turn on the trailing average. 
+                You should also normalize the Lines on the base graph to compare the general trend of each company.
+            </p>
+        </div>
     </div>
     <div class="row justify-content-center" style="background-color: #4b4b4b;">
-        <div class="col-1">
+        <div class="col-xl-1">
+            <div class = "row justify-content-center">
+                <label style="color: white">Compare<br></label>
+            </div>
             <div class = "row justify-content-center">
                 <div class="btn-group-vertical btn-group-toggle" id="options" data-toggle="buttons">
-                    <label style="color:white"><br>Compare<br></label>
                     <label class="btn btn-secondary">
                         <input type="checkbox" autocomplete="off" value="SPY" name="ticker"> SPY
                     </label>
@@ -107,18 +135,43 @@
                 </div>
             </div>
             <div class = "row justify-content-center">
+                <label style="color: white">Normalize<br></label>
+            </div>
+            <div class = "row justify-content-center">
                 <div class = "btn-group-vertical btn-group-toggle" id="normalize" data-toggle="buttons">
-                    <label style="color: white">Normalize<br></label>
                     <label class="btn btn-secondary">
                         <input type="checkbox" autocoplete="off" value="Bars" name="normalize">Bars
                     </label>
                     <label class="btn btn-secondary">
                         <input type="checkbox" autocoplete="off" value="Lines" name="normalize">Lines
+                    </label><br>
+                </div>
+            </div>
+            <div class = "row justify-content-center">
+                <label style="color: white">Trailing Average<br></label>
+            </div>
+            <div class = "row justify-content-center">
+                <div class = "btn-group btn-group-toggle" id="trail" data-toggle="buttons">
+                    <label class="btn btn-secondary">
+                        <input type="radio" autocoplete="off" value="On" name="trail">On
+                    </label>
+                    <label class="btn btn-secondary active">
+                        <input type="radio" autocoplete="off" value="Off" name="trail" checked>Off
                     </label>
                 </div>
             </div>
+
         </div>
-        <div id = "lineDiv" class="col-11"></div>
+        <div id = "lineDiv" class="col-xl-11"></div>
+    </div>
+    <div class = "row justify-content-center">
+        <div class = "col-12">
+            <p><br>
+                Now a question you might be asking yourself is what exactly is in these comments. 
+                Generally WSB discussion post comments are of stock positions focused mainly on highly volatile options known as Calls or Puts.
+                But if you look at the word clouds for individual companies you can see mentionsof their competitors or earnings.
+            </p><br>
+        </div>
     </div>
         <div class="row justify-content-center">
             <div class="col-auto" id = "bullishCloud"><h1 style="color:white;">Bullish</h1>

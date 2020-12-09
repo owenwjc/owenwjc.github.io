@@ -1,7 +1,7 @@
 var margin = {top: 10, right: 150, bottom: 30, left:50};
 var graphWidth = document.getElementById('lineDiv').clientWidth - margin.left - margin.right;
-var graphHeight = Math.min(((document.getElementById('lineDiv').clientWidth * 0.707)- margin.top - margin.bottom-100), 
-                           (window.innerHeight - margin.top - margin.bottom-100));
+var graphHeight = Math.min(((document.getElementById('lineDiv').clientWidth * 0.707)- margin.top - margin.bottom-150), 
+                           (window.innerHeight - margin.top - margin.bottom-150));
 
 colorLines = ["#3d9cf0",
     "#ed47cf",
@@ -20,9 +20,28 @@ colorLines = ["#3d9cf0",
     "#6c81f4",
     "#9d77d9"]
 
+colorAvg = ['#f07f3d',
+'#ceed47',
+'#fc4204',
+'#f4e048',
+'#da5812',
+'#a1ea5d',
+'#f3792e',
+'#d0db7b',
+'#fe9144',
+'#e4d86e',
+'#e9985e',
+'#f8c66f',
+'#e9af7c',
+'#f0d58f',
+'#f4ac6c',
+'#d9bc77']
+
 colorBars = ['#ccffcc', '#ffaacc', '#ccaaee', '#ffffee', '#ccbbcc', '#ffaaee']
 
 var lineColor = d3.scaleOrdinal(colorLines)
+
+var avgColor = d3.scaleOrdinal(colorLines)
 
 var lineSvg = d3.select('#lineDiv').append("svg")
 
@@ -36,17 +55,16 @@ d3.json("data/lineBar.json", function(data) {
 
   var parse = d3.utcParse("%Y-%m-%dT%H:%M:%S.%LZ");
 
-  function update(tickers, normalize){
+  function update(tickers, normalize, trailavg){
     lineSvg.selectAll("*").remove()
 
     graphWidth = document.getElementById('lineDiv').clientWidth - margin.left - margin.right;
-    graphHeight = Math.min(((document.getElementById('lineDiv').clientWidth * 0.707)- margin.top - margin.bottom-100), 
-                           (window.innerHeight - margin.top - margin.bottom-100));
+    graphHeight = Math.min(((document.getElementById('lineDiv').clientWidth * 0.707)- margin.top - margin.bottom-150), 
+                           (window.innerHeight - margin.top - margin.bottom-150));
 
     lineSvg.attr("width", graphWidth + margin.left + margin.right)
             .attr("height", graphHeight + margin.top + margin.bottom)
             .append("g")
-    //lineSvg.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
     var x = d3.scaleBand().range([0 + margin.left,graphWidth]);
 
@@ -200,6 +218,14 @@ d3.json("data/lineBar.json", function(data) {
                  .y(function(d) {
                     return y(+d.Open)})
 
+    var trail = d3.line()
+                  .x(function(d) {
+                      return x(parse(d.time))
+                  })
+                  .y(function(d) {
+                      return y2(+d.avg)
+                  })
+
     lineSvg.append("g")
     .selectAll("myBars")
     .data(stackeddata)
@@ -223,6 +249,31 @@ d3.json("data/lineBar.json", function(data) {
            .attr("fill", "none")
            .attr("stroke", function(d) {return lineColor(d.name)})
            .attr("stroke-width", 2)
+
+    if(normalize.includes("Bars") && trailavg == "On" && tickers.length == 1){
+        lineSvg.selectAll("myAvg")
+            .data(stockdata)
+            .enter()
+            .append("path")
+            .attr("class", function(d) {return d.name + "avg"})
+            .attr("d", function(d) {return trail(d.values)})
+            .attr("fill", "none")
+            .attr("stroke", function(d) {return avgColor(d.name)})
+            .style('stroke-width', 2)
+
+        lineSvg.selectAll("myLabels")
+            .data(stockdata)
+            .enter()
+                 .append("g")
+                 .append("text")
+                     .attr("class", function(d) {return d.name})
+                     .datum(function(d) {return {name: d.name, value: d.values[d.values.length - 1]};})
+                     .attr("transform", function(d) {return "translate(" + x(parse(d.value.time)) + "," + y2(d.value.avg) + ")";})
+                     .attr("x", 12)
+                     .text("trailing average")
+                     .style("fill", function(d) {return avgColor(d.name)})
+                     .style("font-size", 15)
+    }
 
     lineSvg.selectAll("myLabels")
            .data(stockdata)
@@ -257,7 +308,8 @@ d3.json("data/lineBar.json", function(data) {
 
   var normalize = []
   var activeTickers = []
-  update(tickers, normalize)
+  var trailavg = "Off"
+  update(tickers, normalize, trailavg)
 
   $("#options input:checkbox").change(function(d) {
     if (activeTickers.includes(this.value)){
@@ -272,7 +324,7 @@ d3.json("data/lineBar.json", function(data) {
         $("#options").find('[value='+ '"' + removedticker + '"' + ']').prop("checked", false).parent().removeClass("active")
         activeTickers.push(this.value)
     }
-    update(activeTickers, normalize);
+    update(activeTickers, normalize, trailavg);
   })
 
   $("#normalize input:checkbox").change(function(d) {
@@ -283,8 +335,36 @@ d3.json("data/lineBar.json", function(data) {
     else{
         normalize.push(this.value)
     }
-    update(activeTickers, normalize)
+    update(activeTickers, normalize, trailavg)
   })
+
+  $("#trail input:radio").change(function(d) {
+    if (trailavg == "Off"){
+        trailavg = "On"
+    }
+    else{
+        trailavg = "Off"
+    }
+    update(activeTickers, normalize, trailavg)
+  })
+
+  var wideScreen = 1182;
+
+  var toggleBtnGroup = function() {
+      var windowWidth = $(window).width();
+    
+    if(windowWidth > wideScreen) {
+        $('.btn-group-toggle').addClass('btn-group-vertical').removeClass('btn-group');
+
+    } else {
+        $('.btn-group-toggle').addClass('btn-group').removeClass('btn-group-vertical');
+    }
+  }
+
+  toggleBtnGroup();
+
+  window.addEventListener('resize', toggleBtnGroup)
+
   window.addEventListener('resize', function(){
-    update(activeTickers, normalize)})
+    update(activeTickers, normalize, trailavg)})
 })
