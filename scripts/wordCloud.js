@@ -1,4 +1,4 @@
-d3.json("data/wordCloud.json", function(data) {
+d3.json("../data/wordCloud.json", function(data) {
 
     var margin = {top: 10, right: 10, bottom: 10, left: 10};
     var width = 600-margin.left-margin.right;

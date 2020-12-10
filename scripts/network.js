@@ -40,7 +40,7 @@ var simulation = d3.forceSimulation()
 
 var transform = d3.zoomIdentity;
 
-d3.json("data/network.json", function(data) {
+d3.json("../data/network.json", function(data) {
   initGraph(data)
 
   function initGraph(tempData){
