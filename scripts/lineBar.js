@@ -49,7 +49,7 @@ var tickers = ["WMT", "NKLA", "AMZN", "DIS", "FB", "SPCE",
 "BA", "AMD", "MSFT", "AAPL", "TSLA", "SPY"]
 
 
-d3.json("../data/lineBar.json", function(data) {
+d3.json("../data/lineBar.json").then(function(data) {
 
   var subgroups = ['bullish', 'bearish', 'neutral']
 

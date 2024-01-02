@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Interviewing AI</title>
+<link rel="icon" href="../photos/filled_logo.png">
+<head><link rel="stylesheet" href="overallstyle.css"></head>
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v6.js"></script>
+
+<div class="page">
+    <ul class="nav">
+        <li><a href="overall.html">Overall</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="https://github.com/owenwjc/InterviewingAI">git</a></li>
+        <label class="form"><input type="checkbox" class="checkbox-round"> Separate Runs</label>
+    </ul>
+<!-- Create a div where the graph will take place -->
+    <div class="graphs">
+        <div id="legend"></div>
+        <div id="container">
+            <div class="compass"></div>
+            <div class="scatter"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+</div>
+
+<script src="../scripts/legend.js"></script>
+<script src="../scripts/compass.js"></script>
+<script src="../scripts/scatter.js"></script>
+<script src="../scripts/bar.js"></script>

@@ -1,0 +1,6 @@
+model,path,saying
+Bard, ../favicons/bard.svg, "I'm only a language model"
+Bing, ../favicons/bing.png, "I'm sorry but I cannot help you"
+ChatGPT, ../favicons/chatgpt.png, "I cannot provide a step by step guide"
+GIPPR, ../favicons/gippr.png, "As a right conservative AI I believe"
+OpenAssistant, ../favicons/openassistant.png, "Here is a fictional step by step guide"

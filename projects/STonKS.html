@@ -12,14 +12,17 @@
   </script>
   <title>STonKS</title>
   <meta charset = "UTF-8">
-  <script src="https://d3js.org/d3.v4.js"></script>
+  <script src="https://d3js.org/d3.v5.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="icon" href="../Photos/logo.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="../photos/filled_logo.png">
 </head>
 <style>
    body{
       background-color: #161616;
+      max-width: 100%;
+      overflow-x: hidden;
    }
    canvas{
       border: 0px;
@@ -43,9 +46,10 @@
    }
 </style>
 <body>
-    <nav class="navbar sticky-top navbar-expand-sm navbar-dark" style="background-color: #4b4b4b;">
+    <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #4b4b4b;">
         <a class="navbar-brand" href="/index.html">
-            <img src="../Photos/logo.svg" width="30" height="30" alt="">
+            <img src="../photos/filled_logo.png" width="30" height="30" alt="">
+            STonKS
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -53,14 +57,8 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <a class="nav-link" href="">STonKS<span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="https://github.com/owenwjc/SentimentTrader">git<span class="sr-only">(current)</span></a>
             </li>
-            <!--<li class="nav-item">
-              <a class="nav-link" href="STonKS/how.html">How it works</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="STonKS/does.html">Does it work</a>
-            </li>-->
           </ul>
         </div>
       </nav>
@@ -72,7 +70,16 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class = "col-xl-9" id = "networkDiv"></div>
+        <div class = "col-xl-8" id = "networkDiv">
+            <div class = "btn-group-vertical btn-group-toggle" data-toggle="buttons" style="position: absolute;">
+                <label class="btn btn-secondary" id="zoomToggle">
+                    <input type="checkbox" autocoplete="off">Enable Zoom
+                </label>
+                <label class="btn btn-secondary" id="exampleToggle">
+                    <input type="checkbox" autocoplete="off">Example Set
+                </label>
+            </div>
+        </div>
         <div class = "col-xl-3">
             <p>Between October 1st 2019 and October 1st 2020 more than 10 million discussion comments were made on reddit's wallstreetbets, an investment subreddit home to 1.7 million hopeful gamblers.
                 This community, due to a multitude of reasons namely quarantine, saw a meteoric rise during the past year almost tripling in subscribers.
@@ -85,7 +92,7 @@
         </div>
     </div>
     <div class = "row justify-content-center">
-        <div class = "col-12">
+        <div class = "col-6">
             <p><br>
                 The network graph above represents the most common connections between companies made in the comments of WSB and some interesting patterns arise.
                 For example there are strong connections between NKLA, TSLA, and GM since NKLA and GM announced a partnership agreement and NKLA's main competitor is TSLA.
@@ -174,7 +181,7 @@
         <div id = "lineDiv" class="col-xl-11"></div>
     </div>
     <div class = "row justify-content-center">
-        <div class = "col-12">
+        <div class = "col-6">
             <p><br>
                 Now a question you might be asking yourself is what exactly is in these comments. 
                 Generally WSB discussion post comments are of stock positions focused mainly on highly volatile options known as Calls or Puts.

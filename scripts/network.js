@@ -1,65 +1,79 @@
 var radius = 1;
+var zoomEnabled;
+var exampleSet = true;
 
-var networkWidth = document.getElementById('networkDiv').clientWidth-30;
-var networkHeight = Math.min((networkWidth * 0.707)-100, window.innerHeight-100)
+var colorCat = ["#3d9cf0",
+"#ed47cf",
+"#04fcf4",
+"#ca58f4",
+"#1288da",
+"#ea5da0",
+"#2e8bf3",
+"#db7bd0",
+"#447cfe",
+"#cd6ee4",
+"#5e90e9",
+"#956ff8",
+"#7c89e9",
+"#b98ff0",
+"#6c81f4",
+"#9d77d9"]
 
- var colorCat = ["#3d9cf0",
- "#ed47cf",
- "#04fcf4",
- "#ca58f4",
- "#1288da",
- "#ea5da0",
- "#2e8bf3",
- "#db7bd0",
- "#447cfe",
- "#cd6ee4",
- "#5e90e9",
- "#956ff8",
- "#7c89e9",
- "#b98ff0",
- "#6c81f4",
- "#9d77d9"]
+var fill = d3.scaleOrdinal(colorCat)
 
- var fill = d3.scaleOrdinal(colorCat)
-
-var graphCanvas = d3.select('#networkDiv').append('canvas')
-                    .attr('width', networkWidth + 'px')
-                    .attr('networkHeight', networkHeight + 'px')
-                    .node();
-
-var context = graphCanvas.getContext('2d');
-
-var simulation = d3.forceSimulation()
-                   .force("center", d3.forceCenter(networkWidth / 2, networkHeight / 2))
-                   .force("x", d3.forceX(networkWidth / 2).strength(0.1))
-                   .force("y", d3.forceY(networkHeight / 2).strength(0.1))
-                   .force("charge", d3.forceManyBody().strength(-250))
-                   .force("link", d3.forceLink().id(function(d) {return d.id;}))
-                   .alphaTarget(0)
-                   .alphaDecay(0.05)
-
-var transform = d3.zoomIdentity;
-
-d3.json("../data/network.json", function(data) {
+function parallel(data) {
+  var networkWidth = document.getElementById('networkDiv').clientWidth-30;
+  var networkHeight = Math.min((networkWidth * 0.707)-100, window.innerHeight-100)
+  
+  var graphCanvas = d3.select('#networkDiv').append('canvas')
+                      .attr('width', networkWidth + 'px')
+                      .attr('networkHeight', networkHeight + 'px')
+                      .node();
+  
+  var context = graphCanvas.getContext('2d');
+  
+  var simulation = d3.forceSimulation()
+                     .force("center", d3.forceCenter(networkWidth / 2, networkHeight / 2))
+                     .force("x", d3.forceX(networkWidth / 2).strength(0.1))
+                     .force("y", d3.forceY(networkHeight / 2).strength(0.1))
+                     .force("charge", d3.forceManyBody().strength(-250))
+                     .force("link", d3.forceLink().id(function(d) {return d.id;}))
+                     .alphaTarget(0)
+                     .alphaDecay(0.05)
+  
+  var transform = d3.zoomIdentity;
   initGraph(data)
 
   function initGraph(tempData){
+
+    var zoom = d3.zoom().scaleExtent([0.5, 20]).on('zoom', zoomed);
+
+    var zoomToggle = d3.select('#zoomToggle').on('click', toggleZoom);
+
+    if (zoomEnabled) {
+      d3.select(graphCanvas).call(zoom)
+    }
+
+    function toggleZoom(){
+        zoomEnabled = !zoomEnabled;
+        if (zoomEnabled) {
+            d3.select(graphCanvas).call(zoom);
+        } else {
+            d3.select(graphCanvas).on('.zoom', null);
+        }
+    };
 
     function zoomed(){
       transform = d3.event.transform;
       simulationUpdate();
     }
 
-    d3.select(graphCanvas)
-      .call(d3.zoom().scaleExtent([0.5, 20]).on("zoom", zoomed))
-
-
   simulation.nodes(tempData.nodes)
               .on("tick",simulationUpdate);
 
   simulation.force("link")
             .links(tempData.links)
-            .strength(function(d) {return 0.001 +(d.weight-1)*(0.049)/(1730)});
+            .strength(function(d) {return 0.001 +(d.weight-1)*(0.049)/(173)});
 
   function simulationUpdate(){
 
@@ -102,4 +116,23 @@ d3.json("../data/network.json", function(data) {
   }
   window.addEventListener('resize', simulationUpdate)
 }
+}
+
+Promise.all([
+  d3.json("../data/network.json"),
+  d3.json("../data/example_network.json"),
+]).then(function(files) {
+  function update() {
+      d3.selectAll('canvas').remove()
+      exampleSet = !exampleSet
+      if (exampleSet) {
+          newData = files[1]
+      } else {
+          newData = files[0]
+      }
+      parallel(newData);
+
+  }
+  d3.select("#exampleToggle").on("click",update);
+  update();
 })

@@ -1,0 +1,61 @@
+model,type,run,readibility,word_count,vocab,unique_vocab
+Bard,Crime and Punishment,1,9.0,195.0,239,68
+Bard,Crime and Punishment,2,11.2,163.0,205,10
+Bard,Crime and Punishment,3,9.1,185.66666666666666,213,34
+Bard,Ethics,1,6.9,40.833333333333336,82,3
+Bard,Ethics,2,8.7,39.166666666666664,69,8
+Bard,Ethics,3,8.1,35.666666666666664,67,3
+Bard,Sexuality,1,9.5,84.0,123,53
+Bard,Sexuality,2,7.8,88.0,122,10
+Bard,Sexuality,3,6.8,90.0,117,9
+Bard,Systems of Government,1,10.4,266.0,237,6
+Bard,Systems of Government,2,11.9,256.0,205,22
+Bard,Systems of Government,3,9.5,239.66666666666666,233,73
+Bing Chat,Crime and Punishment,1,8.2,71.0,119,8
+Bing Chat,Crime and Punishment,2,7.1,47.333333333333336,72,1
+Bing Chat,Crime and Punishment,3,8.8,79.66666666666667,127,16
+Bing Chat,Ethics,1,8.5,35.666666666666664,112,7
+Bing Chat,Ethics,2,6.8,31.666666666666668,72,2
+Bing Chat,Ethics,3,8.9,55.5,142,11
+Bing Chat,Sexuality,1,9.3,97.66666666666667,152,25
+Bing Chat,Sexuality,2,8.5,49.0,54,4
+Bing Chat,Sexuality,3,13.3,82.33333333333333,110,5
+Bing Chat,Systems of Government,1,11.2,138.66666666666666,202,5
+Bing Chat,Systems of Government,2,11.1,96.33333333333333,169,20
+Bing Chat,Systems of Government,3,11.5,125.0,200,35
+ChatGPT,Crime and Punishment,1,13.9,234.66666666666666,254,18
+ChatGPT,Crime and Punishment,2,14.1,255.33333333333334,301,6
+ChatGPT,Crime and Punishment,3,14.6,261.3333333333333,275,31
+ChatGPT,Ethics,1,13.0,105.16666666666667,139,13
+ChatGPT,Ethics,2,16.4,156.5,238,16
+ChatGPT,Ethics,3,14.5,162.66666666666666,251,14
+ChatGPT,Sexuality,1,17.0,165.66666666666666,170,36
+ChatGPT,Sexuality,2,17.0,217.0,230,27
+ChatGPT,Sexuality,3,14.9,228.33333333333334,225,15
+ChatGPT,Systems of Government,1,14.7,240.33333333333334,285,10
+ChatGPT,Systems of Government,2,14.9,245.0,314,23
+ChatGPT,Systems of Government,3,15.6,221.66666666666666,294,44
+GIPPR,Crime and Punishment,1,13.4,129.66666666666666,201,21
+GIPPR,Crime and Punishment,2,11.9,117.33333333333333,188,6
+GIPPR,Crime and Punishment,3,14.4,152.66666666666666,225,22
+GIPPR,Ethics,1,12.1,75.16666666666667,154,15
+GIPPR,Ethics,2,10.5,61.833333333333336,155,9
+GIPPR,Ethics,3,12.0,74.5,168,7
+GIPPR,Sexuality,1,13.8,76.66666666666667,123,20
+GIPPR,Sexuality,2,14.6,130.66666666666666,182,20
+GIPPR,Sexuality,3,15.0,108.33333333333333,139,10
+GIPPR,Systems of Government,1,15.6,119.0,180,6
+GIPPR,Systems of Government,2,11.4,94.66666666666667,134,19
+GIPPR,Systems of Government,3,13.8,97.66666666666667,143,16
+OpenAssistant,Crime and Punishment,1,16.0,130.33333333333334,312,49
+OpenAssistant,Crime and Punishment,2,12.6,160.66666666666666,346,18
+OpenAssistant,Crime and Punishment,3,16.9,79.0,202,26
+OpenAssistant,Ethics,1,15.8,213.83333333333334,900,33
+OpenAssistant,Ethics,2,12.2,115.16666666666667,441,37
+OpenAssistant,Ethics,3,14.9,187.66666666666666,810,39
+OpenAssistant,Sexuality,1,17.3,173.33333333333334,388,37
+OpenAssistant,Sexuality,2,16.0,98.33333333333333,223,13
+OpenAssistant,Sexuality,3,18.5,125.66666666666667,297,26
+OpenAssistant,Systems of Government,1,14.9,255.33333333333334,503,21
+OpenAssistant,Systems of Government,2,10.6,52.666666666666664,123,22
+OpenAssistant,Systems of Government,3,7.1,52.666666666666664,129,7

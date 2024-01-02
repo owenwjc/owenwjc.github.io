@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,600&display=swap");
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.page {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: rgb(14, 14, 16);
+    color: rgb(236, 236, 241);
+}
+.graphs-left {
+height: 100vh;
+width: 65vw;
+display: flex;
+flex-direction: column;
+overflow-y: scroll;
+}
+.legends {
+    width: 10vw;
+    display: flex;
+    flex-direction: column;
+    background-color: #1f1f23;
+}
+.graphs-right {
+min-height: 100vh;
+width: 25vw;
+display: flex;
+flex-direction: column;
+}
+.bar {
+    overflow-y: scroll;
+    height:100vh;
+}
+svg text {
+    font-family: "IBM Plex Mono", monospace;
+    fill: currentColor;
+    text-shadow: 0 0 1px hsla(0, 0%, 0%, 0.25);
+    letter-spacing: 0.01rem;
+}

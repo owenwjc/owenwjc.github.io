@@ -1,0 +1,137 @@
+@import url("https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,600&display=swap");
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+#container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: rgb(52, 53, 65);
+    color: rgb(236, 236, 241);
+}
+#legend {
+    max-height: 200px;
+}
+.legend image {
+    stroke: #ccc;
+    stroke-width: 1px;
+}
+
+.legend .model {
+fill: lightblue;
+font-weight: bold;
+font-size: 20px;
+}
+
+.legend .saying {
+fill: lightblue;
+font-size: 15px;
+}
+
+.page {
+    display: flex;
+    overflow:auto;
+}
+
+.graphs {
+background: rgb(52, 53, 65);
+min-height: 100vh;
+width: 100vw;
+display: flex;
+flex-direction: column;
+overflow: auto;
+}
+
+.government {
+    width: 90vw;
+    max-width: 600px;
+    border-width:2px;
+    border-style:solid;
+    border-color:rgb(52, 53, 65);
+    background-color: rgb(62, 63, 75);
+}
+.crime {
+    width: 90vw;
+    max-width: 600px;
+    border-width:2px;
+    border-style:solid;
+    border-color:rgb(52, 53, 65);
+    background-color: rgb(62, 63, 75);
+}
+.sexuality {
+    width: 90vw;
+    max-width: 600px;
+    border-width:2px;
+    border-style:solid;
+    border-color:rgb(52, 53, 65);
+    background-color: rgb(62, 63, 75);
+}
+.ethics {
+    width: 90vw;
+    max-width: 600px;
+    border-width:2px;
+    border-style:solid;
+    border-color:rgb(52, 53, 65);
+    background-color: rgb(62, 63, 75);
+}
+
+svg text {
+    font-family: "IBM Plex Mono", monospace;
+    fill: currentColor;
+    text-shadow: 0 0 1px hsla(0, 0%, 0%, 0.25);
+    letter-spacing: 0.01rem;
+}
+
+
+ul.nav {
+    margin:0;
+    padding:0;
+    list-style:none;
+    float:left;
+    width:260px;
+    min-width: 260px;
+    height:100vh;
+    background:rgb(32,33,35); /* you can change the backgorund color here. */
+    font-family:"IBM Plex Mono", monospace;
+    font-size:20px;
+}
+ul.nav li {
+    border-right:1px solid rgb(32,33,35); /* you can change the border color matching to your background color */
+}
+ul.nav a {
+    display:block;
+    padding:20px 28px;
+    color:rgb(236, 236, 241);
+    text-decoration:none;
+}
+ul.nav a:hover,
+ul.nav li.current a {
+    background:rgb(52, 53, 55);
+}
+.form{
+    position: absolute;
+    bottom: 0;
+    display:block;
+    padding:20px 28px;
+    color:rgb(236, 236, 241);
+    text-decoration:none;
+}
+.checkbox-round {
+    width: 1.3em;
+    height: 1.3em;
+    background-color: white;
+    border-radius: 50%;
+    vertical-align: middle;
+    border: 2px solid #ddd;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+}
+.checkbox-round:checked {
+    background-color: rgb(128, 128, 128);
+}

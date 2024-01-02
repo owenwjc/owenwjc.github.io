@@ -10,66 +10,109 @@
 
     gtag('config', 'G-MLK6Z487G4');
   </script>
-  <title>Owen Clinton</title>
+  <title>Owen</title>
   <meta charset = "UTF-8">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="icon" href="/Photos/logo.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="/photos/filled_logo.png">
 </head>
 <style>
-   body{
-      background-image:url('/Photos/Background.jpg');
-      background-position: center top;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-size: cover;
+    h1{
+        text-align:center;
    }
-   h1{
-       text-align:center;
+   a{
+        color: inherit;
    }
-   .footer{
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    margin-bottom:100px;
-    text-align:center;
+   a:hover{
+        text-decoration: none;
+        color: inherit;
+   }
+   a:active{
+        text-decoration: none;
+   }
+   a:visited{
+        text-decoration: none;
    }
 </style>
 <body>
-    <nav class="navbar sticky-top navbar-expand-sm navbar-dark" style="background-color: #4b4b4b;">
-        <a class="navbar-brand" href="">
-            <img src="/Photos/logo.svg" width="30" height="30" alt="">
+    <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #6f737d; margin-bottom: 20px;">
+        <a class="navbar-brand" href="/index.html">
+            <img src="../photos/filled_logo.png" width="30" height="30" alt="">
+            Some Things I've Made
         </a>
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="">Home<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/projects.html">Projects</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/Resume.pdf">Resume</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/about.html">About Me</a>
-            </li>
-          </ul>
-        </div>
-    </nav>
-
-    <h1 class="display-1 text-centerd" style="margin-top: 100px">Owen Clinton</h1>
-
-</body>
-<div class="footer">
+      </nav>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-1">
-                <a href="https://linkedin.com/in/owenwjc"><img src="/Photos/LILogo.png" width="32" height="32" style="background-color: #a9afbd; border-radius: 3px">
-            </div>
-            <div class="col-1">
-                <a href="https://github.com/owenwjc"><img src="/Photos/GithubLogo.png" width="32" height="32" style="background-color: #a9afbd; border-radius: 50%"></a>
-            </div>
+        <div class="row mb-3 justify-content-center">
+            <a class="col-lg-6" href="/projects/sakura.html">
+                <img src="/photos/sakura.PNG" style="border-radius: 10px" class="img-fluid">
+            </a>
+            <a class="col-lg-6" href="/projects/sakura.html">
+                <h4 class="text-centered"><u>sakura keyboard</u></h4>
+                <p>I, like everyone else in the world, have a unique style of typing.
+                    And while traditional keyboard layouts are more than adequate they aren't quite perfect.
+                    So I took the opportunity to learn CAD and eCAD to design and build my own keyboard.
+                    I learned how to model parts to fit together, how to route traces on pcbs, and got to experiment with a new way to connect split keyboards.
+                    The process took about a year but in the end I was rewarded with a truly unique keyboard that perfectly matches how I type.
+                </p>
+            </a>
         </div>
-    </div>
-</div>
+        <div class="row mb-3 justify-content-center">
+            <a class="col-lg-6" href="/projects/EmoteViewer.html">
+                <img src="/photos/EmoteViewer.jpg" style="border-radius: 10px" class="img-fluid">
+            </a>
+            <a class="col-lg-6" href="/projects/EmoteViewer.html">
+                <h4 class="text-centered"><u>Emote Viewer</u></h4>
+                <p>
+                </p>
+            </a>
+        </div>
+        <div class="row mb-3 justify-content-center">
+            <a class="col-lg-6" href="/projects/overall.html">
+                <img src="/photos/InterviewingAI.jpg" style="border-radius: 10px" class="img-fluid">
+            </a>
+            <a class="col-lg-6" href="/projects/overall.html">
+                <h4 class="text-centered"><u>Interviewing AI</u></h4>
+                <p>
+                </p>
+            </a>
+        </div>
+        <div class="row mb-3 justify-content-center">
+            <a class="col-lg-6" href="/projects/HPDA.html">
+                <img src="/photos/HPDA.jpg" style="border-radius: 10px" class="img-fluid">
+            </a>
+            <a class="col-lg-6" href="/projects/HPDA.html">
+                <h4 class="text-centered"><u>Housing Prices in Disaster Areas</u></h4>
+                <p>
+                </p>
+            </a>
+        </div>
+        <div class="row mb-3 justify-content-center">
+            <a class="col-lg-6" href="/projects/STonKS.html">
+                <img src="/photos/STonKS.PNG" style="border-radius: 10px" class="img-fluid">
+            </a>
+            <a class="col-lg-6" href="/projects/STonKS.html">
+                <h4 class="text-centered"><u>Supervised Trading on Key Sentiment</u></h4>
+                <p>Project to learn Node.js, d3.js, and MongoDB by gathering, cleaning, labelling, and visualizing data pulled from Reddit. 
+                    Pulled a training set of 10000 comments and a larger set of 2.4 million comments from last year using Reddit's API. 
+                    Cleaned the data and applied NER using nltk, regex, and Pandas. 
+                    To label the training dataset I built a simple Node.js app on top of my MongoDB server and assigned a sentiment label to each comment. 
+                    Trained a flairNLP classifier with the training dataset and applied it to the larger dataset. 
+                    Built a visualization website using d3, Bootstrap, html, and CSS.</p>
+            </a>
+        </div>
+        <div class="row mb-3 justify-content-center">
+            <a class="col-lg-6" href="/projects/FinalProject.html">
+                <img src="/photos/FinalProject.PNG" style="border-radius: 10px" class="img-fluid">
+            </a>
+            <a class="col-lg-6" href="/projects/FinalProject.html">
+                <h4 class="text-centered"><u>LA City Crime Statistics Visualization and Analysis</u></h4>
+                <p>Class project utilizing a jupyter notebook to answer a question relating to data science. 
+                    Explored the relation between streetlights and crime using publicly available data from LA City. 
+                    Imported and cleaned the data using Pandas and GeoPandas. 
+                    Visualized the data on maps of the region using Folium and Altair. 
+                    Performed a linear regression analysis on controlled data using Scipy.</p>
+            </a>
+        </div>
+    <div>
+</body>
 </html>
